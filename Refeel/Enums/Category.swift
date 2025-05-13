@@ -14,4 +14,5 @@ enum Category: String, CaseIterable, Codable {
     case 업무 = "업무"
     case 휴식 = "휴식"
     case 기타 = "기타"
+
 }

@@ -38,43 +38,58 @@ struct RestrospectDetailView: View {
             .padding()
             .sheet(isPresented: $showCategorySheet) {
                 VStack(spacing: 20) {
-                    Text("카테고리 선택")
+                    Text("내 하루에 담을 키워드를 골라주세요.")
                         .font(.headline)
-                        .padding(.top)
+                    Text("딱 한 개만 고르실 수 있어요")
+                        .font(.headline)
 
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 12) {
+                    FlowLayout(spacing: 10, lineSpacing: 10) {
                         ForEach(categories, id: \.self) { category in
-                            Button {
-                                selectedCategory = category
-                                showCategorySheet = false
-                            } label: {
-                                Text(category.rawValue)
-                                    .font(.caption)
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 6)
-                                    .background(
-                                        Capsule()
-                                            .fill(Color.blue.opacity(0.1))
-                                    )
-                                    .foregroundColor(.blue)
-                            }
+                            TagView(category, selectedCategory == category ? .blue : .gray)
+                                .onTapGesture {
+                                    selectedCategory = category
+                                }
                         }
                     }
+                    .padding()
 
                     Spacer()
                 }
                 .padding()
-                .presentationDetents([.fraction(0.4), .medium])
+                .presentationDetents([.fraction(0.8), .medium])
             }
-
+        }
+        ZStack {
             Button {
 
             } label: {
                 Text("저장하기")
+                    .fontWeight(.semibold)
+                    .padding(.vertical, 15)
+                    .frame(maxWidth: .infinity)
+                    .foregroundStyle(.white)
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.black.gradient)
+                    }
             }
-            .buttonStyle(.borderedProminent)
+            .padding()
         }
-
+    }
+    @ViewBuilder
+    func TagView(_ tag: Category, _ color: Color) -> some View {
+        HStack(spacing: 10) {
+            Text(tag.rawValue)
+                .font(.callout)
+                .fontWeight(.semibold)
+        }
+        .frame(height: 35)
+        .foregroundStyle(.white)
+        .padding(.horizontal, 10)
+        .background {
+            Capsule()
+                .fill(color.gradient)
+        }
 
     }
 }
