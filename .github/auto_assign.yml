@@ -1,0 +1,14 @@
+addReviewers: true
+addAssignees: true
+
+reviewers:
+  - kdn0325
+  - morgan4563
+  - Jeon-GwangHo
+  - kimyujin0822
+
+assignees:
+  - kdn0325
+  - morgan4563
+  - Jeon-GwangHo
+  - kimyujin0822
