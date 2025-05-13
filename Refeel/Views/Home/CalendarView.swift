@@ -52,27 +52,41 @@ struct CalendarView: View {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 10) {
                 ForEach(generateCalendar(), id: \.self) { date in
                     let isToday = Calendar.current.isDateInToday(date)
+                    let isCurrentMonth = Calendar.current.isDate(date, equalTo: currentDate, toGranularity: .month)
+
                     VStack {
-                        Text("\(Calendar.current.component(.day, from: date))")
-                            .foregroundStyle(isToday ? .red : .black)
-                            .fontWeight(isToday ? .bold : .regular)
+                        if isCurrentMonth {
+                            Text("\(Calendar.current.component(.day, from: date))")
+                                .foregroundStyle(isToday ? .red : .black)
+                                .fontWeight(isToday ? .bold : .regular)
 
-
-                        if isWritten(date: date) {
-                            Button {
-								// 글 보기 모드로 진입
-                            } label: {
-                                Image("quokka")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
+                            if isWritten(date: date) {
+                                Button {
+                                    // 글 보기 모드로 진입
+                                } label: {
+                                    Image("quokka")
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                }
+                            } else {
+                                Button {
+                                    // 글 쓰기 모드로 진입
+                                } label: {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 40, height: 40)
+                                        .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
+                                }
                             }
                         } else {
+                            Text("\(Calendar.current.component(.day, from: date))")
+                                .foregroundStyle(Color.gray)
+
                             Button {
-								// 글 쓰기 모드로 진입
+
                             } label: {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
-                                    .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
+                                    .foregroundStyle(Color.gray.opacity(0.2))
                             }
                         }
                     }

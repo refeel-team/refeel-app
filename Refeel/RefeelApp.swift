@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct RefeelApp: App {
+    @State private var isSplashActive = true
+
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            if isSplashActive {
+                SplashView(isActive: $isSplashActive)
+            } else {
+                MainTabView()
+            }
         }
     }
 }
