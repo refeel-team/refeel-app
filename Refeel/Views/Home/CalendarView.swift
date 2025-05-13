@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct CalendarView: View {
     @State private var currentDate: Date = Date()
 
@@ -18,7 +19,7 @@ struct CalendarView: View {
                     currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
                 } label: {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.primary)
                 }
 
                 Spacer()
@@ -33,7 +34,7 @@ struct CalendarView: View {
                     currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
                 } label: {
                     Image(systemName: "chevron.right")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.primary)
                 }
             }
             .padding(.horizontal, 40)
@@ -58,7 +59,7 @@ struct CalendarView: View {
                         if isCurrentMonth {
                             let isFuture = date > Date()
                             Text("\(Calendar.current.component(.day, from: date))")
-                                .foregroundStyle(isToday ? .red : .black)
+                                .foregroundStyle(isToday ? .red : Color.primary)
                                 .fontWeight(isToday ? .bold : .regular)
 
                             if !isFuture {
@@ -66,7 +67,7 @@ struct CalendarView: View {
                                     Button {
                                         // 글 보기 모드로 진입
                                     } label: {
-                                        Image("retro_square")
+                                        Image("refeel")
                                             .resizable()
                                             .frame(width: 40, height: 40)
                                     }
