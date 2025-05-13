@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct CalendarView: View {
     @State private var currentDate: Date = Date()
 
@@ -18,7 +19,7 @@ struct CalendarView: View {
                     currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
                 } label: {
                     Image(systemName: "chevron.left")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.primary)
                 }
 
                 Spacer()
@@ -33,7 +34,7 @@ struct CalendarView: View {
                     currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
                 } label: {
                     Image(systemName: "chevron.right")
-                        .foregroundStyle(.black)
+                        .foregroundStyle(Color.primary)
                 }
             }
             .padding(.horizontal, 40)
@@ -49,15 +50,41 @@ struct CalendarView: View {
             .padding(.top)
             .padding(.horizontal)
 
-            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 34) {
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 10) {
                 ForEach(generateCalendar(), id: \.self) { date in
+                    let isToday = Calendar.current.isDateInToday(date)
+                    let isCurrentMonth = Calendar.current.isDate(date, equalTo: currentDate, toGranularity: .month)
+
                     VStack {
-                        Text("\(Calendar.current.component(.day, from: date))")
+                        if isCurrentMonth {
+                            let isFuture = date > Date()
+                            Text("\(Calendar.current.component(.day, from: date))")
+                                .foregroundStyle(isToday ? .red : Color.primary)
+                                .fontWeight(isToday ? .bold : .regular)
 
-                        Button {
-
-                        } label: {
-                            Text("감자")
+                            if !isFuture {
+                                if isWritten(date: date) {
+                                    Button {
+                                        // 글 보기 모드로 진입
+                                    } label: {
+                                        Image("refeel")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                    }
+                                } else {
+                                    Button {
+                                        // 글 쓰기 모드로 진입
+                                    } label: {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .frame(width: 40, height: 40)
+                                            .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
+                                    }
+                                }
+                            } else {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 40, height: 40)
+                                    .foregroundStyle(Color.gray.opacity(0.8))
+                            }
                         }
                     }
                 }
@@ -66,7 +93,9 @@ struct CalendarView: View {
         }
         Spacer()
     }
+}
 
+extension CalendarView {
     // 달력 날짜 생성 메소드
     func generateCalendar() -> [Date] {
         var calendar = Calendar.current
@@ -95,6 +124,13 @@ struct CalendarView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월"
         return dateFormatter.string(from: by)
+    }
+
+    // 추후 구현, 데이트를 받고 그 데이터베이스에 조회해서 트루펄스 반환하도록함
+    // 지금은 4일당 하루 체크하는걸로 함
+    func isWritten(date: Date) -> Bool {
+        let day = Calendar.current.component(.day, from: date)
+        return day % 4 == 0 ? true : false
     }
 }
 
