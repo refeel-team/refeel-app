@@ -12,29 +12,30 @@ struct RestrospectDetailView: View {
     @State private var text: String = ""
     @State private var selectedCategory: Category? = nil
     @State private var showCategorySheet = false
-
+    
     @Environment(\.modelContext) private var context
     // 저장소 위치
     @Environment(\.dismiss) private var dismiss
     // 화면 pop하기 위한 dismiss
-
+    
     let categories = Category.allCases
-
+    
     var body: some View {
         Button {
             showCategorySheet = true
         } label: {
-            Text(selectedCategory?.rawValue ?? "카테고리를 선택해주세요")
+            Text(selectedCategory?.rawValue ?? "카테고리를 선택해주세요.")
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(Color.gray.opacity(0.1))
-            .cornerRadius(8)        }
-
+                .cornerRadius(8)
+        }
+        
         ScrollView {
             VStack(alignment: .leading) {
                 Text("오늘의 성과는 무엇이었나요?")
                     .font(.headline)
-
+                
                 TextEditor(text: $text)
                     .frame(height: 200)
                     .padding()
@@ -44,25 +45,28 @@ struct RestrospectDetailView: View {
             .sheet(isPresented: $showCategorySheet) {
                 VStack(spacing: 20) {
                     Text("내 하루에 담을 키워드를 골라주세요.")
-                        .font(.headline)
+                        .font(.title3)
                     Text("딱 한 개만 고르실 수 있어요")
                         .font(.headline)
-
+                        .foregroundStyle(.gray)
+                    
                     FlowLayout(spacing: 10, lineSpacing: 10) {
                         ForEach(categories, id: \.self) { category in
                             TagView(category, selectedCategory == category ? .blue : .gray)
                                 .onTapGesture {
                                     selectedCategory = category
+                                    showCategorySheet = false
                                 }
                         }
                     }
                     .padding()
-
+                    
                     Spacer()
                 }
-                .padding()
+                .padding(.top, 40)
                 .presentationDetents([.fraction(0.8), .medium])
             }
+            .padding()
         }
         ZStack {
             Button {
@@ -70,7 +74,7 @@ struct RestrospectDetailView: View {
                 // 카테고리 선택 안된경우 버튼 동작 안되도록, 나중에 메세지로 표시하거나 해서 유저한태 알려줄것 필요
                 let retrospect = Retrospect(date: Date(), content: text, category: selectedCategory)
                 context.insert(retrospect)
-
+                
                 do {
                     try context.save()
                 } catch {
@@ -86,9 +90,10 @@ struct RestrospectDetailView: View {
                     .foregroundStyle(.white)
                     .background {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(.black.gradient)
+                            .fill(selectedCategory == nil ? Color(.gray) : Color(.black))
                     }
             }
+            .disabled(selectedCategory == nil)
             .padding()
         }
     }
@@ -106,7 +111,7 @@ struct RestrospectDetailView: View {
             Capsule()
                 .fill(color.gradient)
         }
-
+        
     }
 }
 
