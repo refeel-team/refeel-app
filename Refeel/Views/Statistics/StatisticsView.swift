@@ -15,7 +15,7 @@ struct StatisticsView: View {
     
     var body: some View {
             VStack {
-                HStack { // 타이틀 제목, 년도, 월 선택
+                HStack { // 타이틀 제목, 년도, 월 선택!!
                     Text("통계 화면 제목")
                     
                     Spacer()
