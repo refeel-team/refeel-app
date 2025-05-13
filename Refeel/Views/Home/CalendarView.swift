@@ -64,7 +64,7 @@ struct CalendarView: View {
                                 Button {
                                     // 글 보기 모드로 진입
                                 } label: {
-                                    Image("quokka")
+                                    Image("retro_square")
                                         .resizable()
                                         .frame(width: 40, height: 40)
                                 }
