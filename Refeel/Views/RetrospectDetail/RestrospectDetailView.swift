@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RestrospectDetailView: View {
     @State private var text: String = ""
-    @State private var selectedCategory: Category = .work
+    @State private var selectedCategory: Category? = nil
     @State private var showCategorySheet = false
 
     let categories = Category.allCases
@@ -19,7 +19,7 @@ struct RestrospectDetailView: View {
         Button {
             showCategorySheet = true
         } label: {
-            Text(selectedCategory.rawValue)
+            Text(selectedCategory?.rawValue ?? "카테고리를 선택해주세요.")
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(Color.gray.opacity(0.1))
@@ -39,15 +39,17 @@ struct RestrospectDetailView: View {
             .sheet(isPresented: $showCategorySheet) {
                 VStack(spacing: 20) {
                     Text("내 하루에 담을 키워드를 골라주세요.")
-                        .font(.headline)
+                        .font(.title3)
                     Text("딱 한 개만 고르실 수 있어요")
                         .font(.headline)
+                        .foregroundStyle(.gray)
 
                     FlowLayout(spacing: 10, lineSpacing: 10) {
                         ForEach(categories, id: \.self) { category in
                             TagView(category, selectedCategory == category ? .blue : .gray)
                                 .onTapGesture {
                                     selectedCategory = category
+                                    showCategorySheet = false
                                 }
                         }
                     }
@@ -55,9 +57,10 @@ struct RestrospectDetailView: View {
 
                     Spacer()
                 }
-                .padding()
+                .padding(.top, 40)
                 .presentationDetents([.fraction(0.8), .medium])
             }
+            .padding()
         }
         ZStack {
             Button {
@@ -70,9 +73,10 @@ struct RestrospectDetailView: View {
                     .foregroundStyle(.white)
                     .background {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(.black.gradient)
+                            .fill(selectedCategory == nil ? Color(.gray) : Color(.black))
                     }
             }
+            .disabled(selectedCategory == nil)
             .padding()
         }
     }
