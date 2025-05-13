@@ -13,8 +13,9 @@ struct MainTabView: View {
             HomeView()
                 .tabItem {
                     Image(systemName: "house")
-					Text("홈")
+                    Text("홈")
                 }
+
             StatisticsView()
                 .tabItem {
                     Image(systemName: "newspaper.fill")

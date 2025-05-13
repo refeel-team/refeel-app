@@ -49,15 +49,31 @@ struct CalendarView: View {
             .padding(.top)
             .padding(.horizontal)
 
-            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 34) {
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 10) {
                 ForEach(generateCalendar(), id: \.self) { date in
+                    let isToday = Calendar.current.isDateInToday(date)
                     VStack {
                         Text("\(Calendar.current.component(.day, from: date))")
+                            .foregroundStyle(isToday ? .red : .black)
+                            .fontWeight(isToday ? .bold : .regular)
 
-                        Button {
 
-                        } label: {
-                            Text("감자")
+                        if isWritten(date: date) {
+                            Button {
+								// 글 보기 모드로 진입
+                            } label: {
+                                Image("quokka")
+                                    .resizable()
+                                    .frame(width: 40, height: 40)
+                            }
+                        } else {
+                            Button {
+								// 글 쓰기 모드로 진입
+                            } label: {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .frame(width: 40, height: 40)
+                                    .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
+                            }
                         }
                     }
                 }
@@ -66,7 +82,9 @@ struct CalendarView: View {
         }
         Spacer()
     }
+}
 
+extension CalendarView {
     // 달력 날짜 생성 메소드
     func generateCalendar() -> [Date] {
         var calendar = Calendar.current
@@ -95,6 +113,13 @@ struct CalendarView: View {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월"
         return dateFormatter.string(from: by)
+    }
+
+    // 추후 구현, 데이트를 받고 그 데이터베이스에 조회해서 트루펄스 반환하도록함
+    // 지금은 4일당 하루 체크하는걸로 함
+    func isWritten(date: Date) -> Bool {
+        let day = Calendar.current.component(.day, from: date)
+        return day % 4 == 0 ? true : false
     }
 }
 
