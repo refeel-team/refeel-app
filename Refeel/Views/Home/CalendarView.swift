@@ -56,37 +56,33 @@ struct CalendarView: View {
 
                     VStack {
                         if isCurrentMonth {
+                            let isFuture = date > Date()
                             Text("\(Calendar.current.component(.day, from: date))")
                                 .foregroundStyle(isToday ? .red : .black)
                                 .fontWeight(isToday ? .bold : .regular)
 
-                            if isWritten(date: date) {
-                                Button {
-                                    // 글 보기 모드로 진입
-                                } label: {
-                                    Image("retro_square")
-                                        .resizable()
-                                        .frame(width: 40, height: 40)
+                            if !isFuture {
+                                if isWritten(date: date) {
+                                    Button {
+                                        // 글 보기 모드로 진입
+                                    } label: {
+                                        Image("retro_square")
+                                            .resizable()
+                                            .frame(width: 40, height: 40)
+                                    }
+                                } else {
+                                    Button {
+                                        // 글 쓰기 모드로 진입
+                                    } label: {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .frame(width: 40, height: 40)
+                                            .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
+                                    }
                                 }
                             } else {
-                                Button {
-                                    // 글 쓰기 모드로 진입
-                                } label: {
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .frame(width: 40, height: 40)
-                                        .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
-                                }
-                            }
-                        } else {
-                            Text("\(Calendar.current.component(.day, from: date))")
-                                .foregroundStyle(Color.gray)
-
-                            Button {
-
-                            } label: {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
-                                    .foregroundStyle(Color.gray.opacity(0.2))
+                                    .foregroundStyle(Color.gray.opacity(0.8))
                             }
                         }
                     }
