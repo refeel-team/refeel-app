@@ -11,12 +11,14 @@ struct StatisticsView: View {
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
     
-    @State private var selectedIndex: Int? = nil
+    @State private var selectedIndex: String? = nil
     
     var body: some View {
             VStack {
                 HStack { // 타이틀 제목, 년도, 월 선택!!
                     Text("통계 화면 제목")
+                        .font(.title)
+                        .bold()
                     
                     Spacer()
                     
@@ -37,13 +39,25 @@ struct StatisticsView: View {
                 
                 ScrollView(.horizontal) { // 가로 스크롤 카테고리
                     HStack {
-                        ForEach(1..<8, id: \.self) { index in
+                        ForEach(Category.allCases, id: \.self) { category in
                             Button {
-                                selectedIndex = index
+                                selectedIndex = category.rawValue
                             } label: {
-                                Capsule()
-                                    .fill(selectedIndex == index ? .green : .green.opacity(0.6))
-                                    .frame(width: 70, height: 30)
+                                Text(category.rawValue)
+                                    .foregroundStyle(.black)
+                                    .fontWeight(.semibold)
+                                    .padding()
+                                    .background {
+                                        Capsule()
+                                            .fill(selectedIndex == category.rawValue ? .green : .yellow)
+                                            .frame(width: 70, height: 30)
+                                        
+                                        Capsule()
+                                            .stroke(lineWidth: 1)
+                                            .fill(.black)
+                                            .frame(width: 70, height: 30)
+                                    }
+                                    .padding(.horizontal,8)
                             }
                         }
                     }
@@ -60,7 +74,7 @@ struct StatisticsView: View {
                 } else {
                     ScrollView { // 통계 자료 목록
                         VStack(alignment: .trailing) {
-                            Text("공부: 10개")
+                            Text("\(selectedIndex ?? ""): 10개")
                                 .bold()
                                 .padding()
                             
