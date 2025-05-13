@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RestrospectDetailView: View {
     @State private var text: String = ""
-    @State private var selectedCategory: Category = .운동
+    @State private var selectedCategory: Category = .work
     @State private var showCategorySheet = false
 
     let categories = Category.allCases
