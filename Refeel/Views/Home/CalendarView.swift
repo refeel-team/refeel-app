@@ -6,90 +6,100 @@
 //
 
 import SwiftUI
+import SwiftData
 
 
 struct CalendarView: View {
+    @Environment(\.modelContext) private var context
+    @Query private var retrospects: [Retrospect]
+    @State private var selectedDate: Date?
     @State private var currentDate: Date = Date()
 
     var body: some View {
-        VStack(spacing: 0) {
-            // 월 이동 버튼, 타이틀
-            HStack {
-                Button {
-                    currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .foregroundStyle(Color.primary)
+        #warning("여기서부터 시작하셈, 네비게이션 스택 만들었고 지금 글작성뷰에 저장기능 넣어둠")
+        NavigationStack {
+            VStack(spacing: 0) {
+                // 월 이동 버튼, 타이틀
+                HStack {
+                    Button {
+                        currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundStyle(Color.primary)
+                    }
+
+                    Spacer()
+
+                    Text(dateFormatting(by: currentDate))
+                        .font(.title2)
+                        .fontWeight(.semibold)
+
+                    Spacer()
+
+                    Button {
+                        currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
+                    } label: {
+                        Image(systemName: "chevron.right")
+                            .foregroundStyle(Color.primary)
+                    }
                 }
+                .padding(.horizontal, 40)
+                .padding()
 
-                Spacer()
-
-                Text(dateFormatting(by: currentDate))
-                    .font(.title2)
-                    .fontWeight(.semibold)
-
-                Spacer()
-
-                Button {
-                    currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .foregroundStyle(Color.primary)
+                //달력
+                LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
+                    ForEach(["일","월","화","수","목","금","토"], id: \.self) { day in
+                        Text(day)
+                            .font(.title3)
+                    }
                 }
-            }
-            .padding(.horizontal, 40)
-            .padding()
+                .padding(.top)
+                .padding(.horizontal)
 
-            //달력
-            LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
-                ForEach(["일","월","화","수","목","금","토"], id: \.self) { day in
-                    Text(day)
-                        .font(.title3)
-                }
-            }
-            .padding(.top)
-            .padding(.horizontal)
+                LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 10) {
+                    ForEach(generateCalendar(), id: \.self) { date in
+                        let isToday = Calendar.current.isDateInToday(date)
+                        let isCurrentMonth = Calendar.current.isDate(date, equalTo: currentDate, toGranularity: .month)
 
-            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 10) {
-                ForEach(generateCalendar(), id: \.self) { date in
-                    let isToday = Calendar.current.isDateInToday(date)
-                    let isCurrentMonth = Calendar.current.isDate(date, equalTo: currentDate, toGranularity: .month)
+                        VStack {
+                            if isCurrentMonth {
+                                let isFuture = date > Date()
+                                Text("\(Calendar.current.component(.day, from: date))")
+                                    .foregroundStyle(isToday ? .red : Color.primary)
+                                    .fontWeight(isToday ? .bold : .regular)
 
-                    VStack {
-                        if isCurrentMonth {
-                            let isFuture = date > Date()
-                            Text("\(Calendar.current.component(.day, from: date))")
-                                .foregroundStyle(isToday ? .red : Color.primary)
-                                .fontWeight(isToday ? .bold : .regular)
-
-                            if !isFuture {
-                                if isWritten(date: date) {
-                                    Button {
-                                        // 글 보기 모드로 진입
-                                    } label: {
-                                        Image("refeel")
-                                            .resizable()
-                                            .frame(width: 40, height: 40)
+                                if !isFuture {
+                                    if isWritten(date: date) {
+                                        Button {
+                                            selectedDate = date
+                                        } label: {
+                                            Image("refeel")
+                                                .resizable()
+                                                .frame(width: 40, height: 40)
+                                        }
+                                    } else {
+                                        Button {
+                                            selectedDate = date
+                                        } label: {
+                                            RoundedRectangle(cornerRadius: 10)
+                                                .frame(width: 40, height: 40)
+                                                .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
+                                        }
                                     }
                                 } else {
-                                    Button {
-                                        // 글 쓰기 모드로 진입
-                                    } label: {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: 40, height: 40)
-                                            .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
-                                    }
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 40, height: 40)
+                                        .foregroundStyle(Color.gray.opacity(0.8))
                                 }
-                            } else {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 40, height: 40)
-                                    .foregroundStyle(Color.gray.opacity(0.8))
                             }
                         }
                     }
                 }
+                .padding()
             }
-            .padding()
+            .navigationDestination(item: $selectedDate) { data in
+//                if let
+            }
         }
         Spacer()
     }

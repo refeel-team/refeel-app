@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct RefeelApp: App {
@@ -19,5 +20,6 @@ struct RefeelApp: App {
                 MainTabView()
             }
         }
+        .modelContainer(for: Retrospect.self)
     }
 }
