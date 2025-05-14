@@ -12,7 +12,8 @@ struct RestrospectDetailView: View {
     @State private var text: String = ""
     @State private var selectedCategory: Category? = nil
     @State private var showCategorySheet = false
-    
+    let selectedDate: Date?
+
     @Environment(\.modelContext) private var context
     // 저장소 위치
     @Environment(\.dismiss) private var dismiss
@@ -116,5 +117,5 @@ struct RestrospectDetailView: View {
 }
 
 #Preview {
-    RestrospectDetailView()
+    RestrospectDetailView(selectedDate: Date())
 }
