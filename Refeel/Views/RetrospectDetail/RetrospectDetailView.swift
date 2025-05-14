@@ -12,25 +12,23 @@ struct RetrospectDetailView: View {
     @State private var text: String = ""
     @State private var selectedCategory: Category? = nil
     @State private var showCategorySheet = false
-    // 회고 데이터 : 외부 주입 데이터 가져올 경우 이게 맞는지?
-    let existingRetrospect: Retrospect?
+    let selectedDate: Date?
     // 쓰기 모드인지 보기 모드인지 분기
     @State private var isViewing: Bool = false
     // 조회 쿼리문
     @Query(sort: \Retrospect.date, order: .reverse) private var retrospects: [Retrospect]
 
-    init(existingRetrospect: Retrospect? = nil) {
-        self.existingRetrospect = existingRetrospect
-    }
-
-    @Environment(\.modelContext) private var context
     // 저장소 위치
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var context
     // 화면 pop하기 위한 dismiss
+    @Environment(\.dismiss) private var dismiss
+
 
     let categories = Category.allCases
 
     var body: some View {
+        // 글 보기 화면
+        // isViewing으로 쓰기/보기 모드 분류
         Button {
             showCategorySheet = true
         } label: {
@@ -40,10 +38,6 @@ struct RetrospectDetailView: View {
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(8)
         }
-
-
-        // 글 보기 화면
-        // isViewing으로 쓰기/보기 모드 분류
         VStack(alignment: .leading) {
             Text("오늘의 성과는 무엇이었나요?")
                 .font(.headline)
@@ -52,7 +46,9 @@ struct RetrospectDetailView: View {
                 .padding()
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
         }
-
+        .onAppear {
+            print(selectedDate)
+        }
         .padding()
         .sheet(isPresented: $showCategorySheet) {
             VStack(spacing: 20) {
@@ -116,5 +112,5 @@ struct RetrospectDetailView: View {
 }
 
 #Preview {
-    RetrospectDetailView()
+	RetrospectDetailView(selectedDate: Date())
 }
