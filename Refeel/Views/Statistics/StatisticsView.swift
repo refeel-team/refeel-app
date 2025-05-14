@@ -204,7 +204,7 @@ struct StatisticsView: View {
             }
         }
         let grouped = Dictionary(grouping: filtered) { retrospect in
-            formattedDateOnly(retrospect.date)
+            formattedDate(retrospect.date)
         }
 
         let earliestPerDay = grouped.values.compactMap { group in
@@ -213,19 +213,6 @@ struct StatisticsView: View {
         // 최신 날짜가 위로 오도록 정렬
         return earliestPerDay.sorted { $0.date > $1.date }
     }
-
-    private func formattedDateOnly(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd" // 날짜까지만 사용
-        return formatter.string(from: date)
-    }
-
-    private func formattedDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "YYYY-MM-dd"
-        return formatter.string(from: date)
-    }
-
 }
 
 #Preview {
