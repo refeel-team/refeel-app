@@ -144,8 +144,20 @@ struct RetrospectDetailView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 if isViewing {
                     Button {
+                        guard let selectedDate else { return }
+
+                        if let retrospectData = retrospects.first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+                        }) {
+                            context.delete(retrospectData)
+
+                            do {
+                                try context.save()
+                            } catch {
+                                print("회고 삭제 실패 삭제")
+                            }
+                            dismiss()
+                        }
                         // 삭제 로직 추가
-                        print("🗑️ 삭제")
                     } label: {
                         Text("삭제")
                             .foregroundColor(.red)
