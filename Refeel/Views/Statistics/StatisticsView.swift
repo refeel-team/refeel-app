@@ -11,11 +11,13 @@ import SwiftData
 struct StatisticsView: View {
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
-    
-    @State private var selectedCatagory: String? = nil
-    
-    @Query private var retrospects: [Retrospect]
-    
+
+    let categories = Category.allCases
+    @State private var selectedCategory: Category? = nil
+
+    @Query var retrospects: [Retrospect]
+
+
     var body: some View {
             VStack {
                 HStack { // 타이틀 제목, 년도, 월 선택!!
@@ -103,8 +105,25 @@ struct StatisticsView: View {
             }
             .padding()
     }
+    private func filteredRetrospects() -> [Retrospect] {
+        guard let category = selectedCategory else { return [] }
+
+        return retrospects.filter { retrospect in
+            let components = Calendar.current.dateComponents([.year, .month], from: retrospect.date)
+            return retrospect.category == category &&
+            components.year == selectedYear &&
+            components.month == selectedMonth
+        }
+    }
+
+    private func formattedDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd"
+        return formatter.string(from: date)
+    }
+
 }
 
 #Preview {
-        StatisticsView()
+    StatisticsView()
 }
