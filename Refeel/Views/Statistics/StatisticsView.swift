@@ -109,7 +109,7 @@ struct StatisticsView: View {
                                     .foregroundStyle(.gray)
                             }
                             .padding(.vertical, 4)
-                            .contentShape(Rectangle()) 
+                            .contentShape(Rectangle())
                             .onTapGesture {
                                 selectedDate = retrospect.date // 날짜만 선택해서 이동
                             }
@@ -127,10 +127,8 @@ struct StatisticsView: View {
     }
 
     private func filteredRetrospects() -> [Retrospect] {
-        return retrospects.filter { retrospect in
+        let filtered = retrospects.filter { retrospect in
             let components = Calendar.current.dateComponents([.year, .month], from: retrospect.date)
-
-            // 날짜 필터가 항상 적용되도록 유지하기
             let isYearAndMonthMatching = components.year == selectedYear && components.month == selectedMonth
 
             if let category = selectedCategory {
@@ -139,6 +137,22 @@ struct StatisticsView: View {
                 return isYearAndMonthMatching
             }
         }
+        let grouped = Dictionary(grouping: filtered) { retrospect in
+            formattedDateOnly(retrospect.date)
+        }
+
+        let earliestPerDay = grouped.values.compactMap { group in
+            group.sorted { $0.date < $1.date }.first
+        }
+
+        // 최신 날짜가 위로 오도록 정렬
+        return earliestPerDay.sorted { $0.date > $1.date }
+    }
+
+    private func formattedDateOnly(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd" // 날짜까지만 사용
+        return formatter.string(from: date)
     }
 
     private func formattedDate(_ date: Date) -> String {
