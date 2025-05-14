@@ -11,7 +11,7 @@ struct StatisticsView: View {
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
     
-    @State private var selectedIndex: String? = nil
+    @State private var selectedCatagory: String? = nil
     
     var body: some View {
             VStack {
@@ -41,7 +41,7 @@ struct StatisticsView: View {
                     HStack {
                         ForEach(Category.allCases, id: \.self) { category in
                             Button {
-                                selectedIndex = category.rawValue
+                                selectedCatagory = category.rawValue
                             } label: {
                                 Text(category.rawValue)
                                     .foregroundStyle(.black)
@@ -49,7 +49,7 @@ struct StatisticsView: View {
                                     .padding()
                                     .background {
                                         Capsule()
-                                            .fill(selectedIndex == category.rawValue ? .green : .yellow)
+                                            .fill(selectedCatagory == category.rawValue ? .green : .yellow)
                                             .frame(width: 70, height: 30)
                                         
                                         Capsule()
@@ -66,7 +66,7 @@ struct StatisticsView: View {
                 
                 Spacer()
                 
-                if selectedIndex == nil {
+                if selectedCatagory == nil {
                     Label("카테고리를 선택해주세요.", systemImage: "bubble.right.circle.fill")
                         .font(.title2)
                         .bold()
@@ -74,7 +74,7 @@ struct StatisticsView: View {
                 } else {
                     ScrollView { // 통계 자료 목록
                         VStack(alignment: .trailing) {
-                            Text("\(selectedIndex ?? ""): 10개")
+                            Text("\(selectedCatagory ?? ""): 10개")
                                 .bold()
                                 .padding()
                             
