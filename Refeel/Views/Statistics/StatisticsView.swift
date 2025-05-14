@@ -17,94 +17,97 @@ struct StatisticsView: View {
 
     @Query var retrospects: [Retrospect]
 
-
     var body: some View {
-            VStack {
-                HStack { // 타이틀 제목, 년도, 월 선택!!
-                    Text("통계 화면 제목")
-                        .font(.title)
-                        .bold()
-                    
-                    Spacer()
-                    
-                    Picker("연도", selection: $selectedYear) {
-                        ForEach(2025...2027, id: \.self) { year in
-                            Text(String(format: "%d년", year))
-                        }
-                    }
-                    .buttonStyle(.bordered)
-                    
-                    Picker("월", selection: $selectedMonth) {
-                        ForEach(1...12, id: \.self) { month in
-                            Text("\(month)월")
-                        }
-                    }
-                    .buttonStyle(.bordered)
-                }
-                
-                ScrollView(.horizontal) { // 가로 스크롤 카테고리
-                    HStack {
-                        ForEach(Category.allCases, id: \.self) { category in
-                            Button {
-                                selectedCatagory = category.rawValue
-                            } label: {
-                                Text(category.rawValue)
-                                    .foregroundStyle(.black)
-                                    .fontWeight(.semibold)
-                                    .padding()
-                                    .background {
-                                        Capsule()
-                                            .fill(selectedCatagory == category.rawValue ? .green : .yellow)
-                                            .frame(width: 70, height: 30)
-                                        
-                                        Capsule()
-                                            .stroke(lineWidth: 1)
-                                            .fill(.black)
-                                            .frame(width: 70, height: 30)
-                                    }
-                                    .padding(.horizontal,8)
-                            }
-                        }
-                    }
-                }
-                .scrollIndicators(.hidden)
-                
+        VStack {
+            HStack { // 타이틀 제목, 년도, 월 선택!!
+                Text("통계 화면 제목")
+                    .font(.title)
+                    .bold()
+
                 Spacer()
-                
-                if selectedCatagory == nil {
-                    Label("카테고리를 선택해주세요.", systemImage: "bubble.right.circle.fill")
-                        .font(.title2)
-                        .bold()
-                        .padding(.bottom, 350)
-                } else {
-                    ScrollView { // 통계 자료 목록
-                        VStack(alignment: .trailing) {
-                            Text("\(selectedCatagory ?? ""): 10개")
-                                .bold()
+
+                Picker("연도", selection: $selectedYear) {
+                    ForEach(2025...2027, id: \.self) { year in
+                        Text(String(format: "%d년", year))
+                    }
+                }
+                .buttonStyle(.bordered)
+
+                Picker("월", selection: $selectedMonth) {
+                    ForEach(1...12, id: \.self) { month in
+                        Text("\(month)월")
+                    }
+                }
+                .buttonStyle(.bordered)
+            }
+
+            ScrollView(.horizontal) { // 가로 스크롤 카테고리
+                HStack {
+                    ForEach(categories, id: \.self) { category in
+                        Button {
+                            selectedCategory = category
+                        } label: {
+                            Text(category.rawValue)
+                                .foregroundStyle(.black)
+                                .fontWeight(.semibold)
                                 .padding()
-                            
-                            HStack {
-                                VStack {
-                                    ForEach(1..<11) { _ in
-                                        Text("글 1")
-                                    }
+                                .background {
+                                    Capsule()
+                                        .fill(selectedCategory == category ? .green : .yellow)
+                                        .frame(width: 70, height: 30)
+
+                                    Capsule()
+                                        .stroke(lineWidth: 1)
+                                        .fill(.black)
+                                        .frame(width: 70, height: 30)
                                 }
-                                
-                                Spacer()
-                                
-                                VStack {
-                                    ForEach(1..<11) { _ in
-                                        Text("05-12")
-                                    }
-                                }
-                            }
+                                .padding(.horizontal, 8)
                         }
                     }
-                    Spacer()
                 }
             }
-            .padding()
+            .scrollIndicators(.hidden)
+
+            Spacer()
+
+            if selectedCategory == nil {
+                Label("카테고리를 선택해주세요.", systemImage: "bubble.right.circle.fill")
+                    .font(.title2)
+                    .bold()
+                    .padding(.bottom, 350)
+            } else {
+                ScrollView { // 통계 자료 목록
+                    VStack(alignment: .trailing) {
+                        // 카테고리에 맞는 데이터 개수 표시
+                        Text("\(selectedCategory?.rawValue ?? ""): \(filteredRetrospects().count)개")
+                            .bold()
+                            .padding()
+
+                        HStack {
+                            VStack {
+                                // 실제 데이터를 출력하려면 filteredRetrospects() 사용
+                                ForEach(filteredRetrospects(), id: \.self) { retrospect in
+                                    Text(retrospect.content ?? "")
+                                }
+                            }
+
+                            Spacer()
+
+                            VStack {
+                                // 날짜 형식화해서 출력
+                                ForEach(filteredRetrospects(), id: \.self) { retrospect in
+                                    Text(formattedDate(retrospect.date))  // 날짜 형식화
+                                }
+                            }
+                        }
+                    }
+                }
+                Spacer()
+            }
+        }
+        .padding()
     }
+
     private func filteredRetrospects() -> [Retrospect] {
         guard let category = selectedCategory else { return [] }
 
@@ -121,7 +124,6 @@ struct StatisticsView: View {
         formatter.dateFormat = "MM-dd"
         return formatter.string(from: date)
     }
-
 }
 
 #Preview {
