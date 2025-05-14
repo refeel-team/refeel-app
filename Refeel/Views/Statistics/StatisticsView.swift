@@ -41,8 +41,29 @@ struct StatisticsView: View {
                 .buttonStyle(.bordered)
             }
 
-            ScrollView(.horizontal) { // 가로 스크롤 카테고리
+            ScrollView(.horizontal) {
                 HStack {
+                    Button {
+                        selectedCategory = nil
+                    } label: {
+                        Text("전체 보기")
+                            .foregroundStyle(.black)
+                            .fontWeight(.semibold)
+                            .padding()
+                            .background {
+                                Capsule()
+                                    .fill(selectedCategory == nil ? .green : .yellow)
+                                    .frame(width: 70, height: 30)
+
+                                Capsule()
+                                    .stroke(lineWidth: 1)
+                                    .fill(.black)
+                                    .frame(width: 70, height: 30)
+                            }
+                            .padding(.horizontal, 8)
+
+                    }
+
                     ForEach(categories, id: \.self) { category in
                         Button {
                             selectedCategory = category
@@ -70,37 +91,29 @@ struct StatisticsView: View {
 
             Spacer()
 
-            if selectedCategory == nil {
-                Label("카테고리를 선택해주세요.", systemImage: "bubble.right.circle.fill")
-                    .font(.title2)
-                    .bold()
-                    .padding(.bottom, 350)
-            } else {
-                ScrollView { // 통계 자료 목록
-                    VStack(alignment: .trailing) {
-                        // 카테고리에 맞는 데이터 개수 표시
-                        Text("\(selectedCategory?.rawValue ?? ""): \(filteredRetrospects().count)개")
-                            .bold()
-                            .padding()
+            ScrollView { // 통계 자료 목록
+                VStack(alignment: .trailing) {
+                    // 카테고리에 맞는 데이터 개수 표시
+                    Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
+                        .bold()
+                        .padding()
 
-                        HStack {
-                            VStack {
-                                // 실제 데이터를 출력하려면 filteredRetrospects() 사용
-                                ForEach(filteredRetrospects(), id: \.self) { retrospect in
-                                    Text(retrospect.content ?? "")
-                                }
+                    HStack {
+                        VStack {
+                            ForEach(filteredRetrospects(), id: \.self) { retrospect in
+                                Text(retrospect.content ?? "")
                             }
+                        }
 
-                            Spacer()
+                        Spacer()
 
-                            VStack {
-                                // 날짜 형식화해서 출력
-                                ForEach(filteredRetrospects(), id: \.self) { retrospect in
-                                    Text(formattedDate(retrospect.date))  // 날짜 형식화
-                                }
+                        VStack {
+                            ForEach(filteredRetrospects(), id: \.self) { retrospect in
+                                Text(formattedDate(retrospect.date))
                             }
                         }
                     }
+
                 }
                 Spacer()
             }
@@ -109,19 +122,23 @@ struct StatisticsView: View {
     }
 
     private func filteredRetrospects() -> [Retrospect] {
-        guard let category = selectedCategory else { return [] }
-
         return retrospects.filter { retrospect in
             let components = Calendar.current.dateComponents([.year, .month], from: retrospect.date)
-            return retrospect.category == category &&
-            components.year == selectedYear &&
-            components.month == selectedMonth
+
+            // 날짜 필터가 항상 적용되도록 유지하기
+            let isYearAndMonthMatching = components.year == selectedYear && components.month == selectedMonth
+
+            if let category = selectedCategory {
+                return retrospect.category == category && isYearAndMonthMatching
+            } else {
+                return isYearAndMonthMatching
+            }
         }
     }
 
     private func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM-dd"
+        formatter.dateFormat = "YYYY-MM-dd"
         return formatter.string(from: date)
     }
 }
