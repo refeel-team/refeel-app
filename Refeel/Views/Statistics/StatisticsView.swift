@@ -14,67 +14,47 @@ struct StatisticsView: View {
 
     let categories = Category.allCases
     @State private var selectedCategory: Category? = nil
+    @State private var selectedDate: Date? = nil
 
     @Query var retrospects: [Retrospect]
 
     var body: some View {
-        VStack {
-            HStack { // 타이틀 제목, 년도, 월 선택!!
-                Text("통계 화면 제목")
-                    .font(.title)
-                    .bold()
+        NavigationStack {
+            VStack {
+                HStack { // 타이틀 제목, 년도, 월 선택!!
+                    Text("통계 화면 제목")
+                        .font(.title)
+                        .bold()
 
-                Spacer()
+                    Spacer()
 
-                Picker("연도", selection: $selectedYear) {
-                    ForEach(2025...2027, id: \.self) { year in
-                        Text(String(format: "%d년", year))
+                    Picker("연도", selection: $selectedYear) {
+                        ForEach(2025...2027, id: \.self) { year in
+                            Text(String(format: "%d년", year))
+                        }
                     }
+                    .buttonStyle(.bordered)
+
+                    Picker("월", selection: $selectedMonth) {
+                        ForEach(1...12, id: \.self) { month in
+                            Text("\(month)월")
+                        }
+                    }
+                    .buttonStyle(.bordered)
                 }
-                .buttonStyle(.bordered)
 
-                Picker("월", selection: $selectedMonth) {
-                    ForEach(1...12, id: \.self) { month in
-                        Text("\(month)월")
-                    }
-                }
-                .buttonStyle(.bordered)
-            }
-
-            ScrollView(.horizontal) {
-                HStack {
-                    Button {
-                        selectedCategory = nil
-                    } label: {
-                        Text("전체 보기")
-                            .foregroundStyle(.black)
-                            .fontWeight(.semibold)
-                            .padding()
-                            .background {
-                                Capsule()
-                                    .fill(selectedCategory == nil ? .green : .yellow)
-                                    .frame(width: 70, height: 30)
-
-                                Capsule()
-                                    .stroke(lineWidth: 1)
-                                    .fill(.black)
-                                    .frame(width: 70, height: 30)
-                            }
-                            .padding(.horizontal, 8)
-
-                    }
-
-                    ForEach(categories, id: \.self) { category in
+                ScrollView(.horizontal) {
+                    HStack {
                         Button {
-                            selectedCategory = category
+                            selectedCategory = nil
                         } label: {
-                            Text(category.rawValue)
+                            Text("전체 보기")
                                 .foregroundStyle(.black)
                                 .fontWeight(.semibold)
                                 .padding()
                                 .background {
                                     Capsule()
-                                        .fill(selectedCategory == category ? .green : .yellow)
+                                        .fill(selectedCategory == nil ? .green : .yellow)
                                         .frame(width: 70, height: 30)
 
                                     Capsule()
@@ -83,42 +63,67 @@ struct StatisticsView: View {
                                         .frame(width: 70, height: 30)
                                 }
                                 .padding(.horizontal, 8)
+
+                        }
+
+                        ForEach(categories, id: \.self) { category in
+                            Button {
+                                selectedCategory = category
+                            } label: {
+                                Text(category.rawValue)
+                                    .foregroundStyle(.black)
+                                    .fontWeight(.semibold)
+                                    .padding()
+                                    .background {
+                                        Capsule()
+                                            .fill(selectedCategory == category ? .green : .yellow)
+                                            .frame(width: 70, height: 30)
+
+                                        Capsule()
+                                            .stroke(lineWidth: 1)
+                                            .fill(.black)
+                                            .frame(width: 70, height: 30)
+                                    }
+                                    .padding(.horizontal, 8)
+                            }
                         }
                     }
+                }
+                .scrollIndicators(.hidden)
+
+                Spacer()
+
+                ScrollView { // 통계 자료 목록
+                    VStack(alignment: .trailing) {
+                        // 카테고리에 맞는 데이터 개수 표시
+                        Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
+                            .bold()
+                            .padding()
+
+                        ForEach(filteredRetrospects(), id: \.self) { retrospect in
+                            HStack {
+                                Text(retrospect.content ?? "")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                                Text(formattedDate(retrospect.date))
+                                    .foregroundStyle(.gray)
+                            }
+                            .padding(.vertical, 4)
+                            .contentShape(Rectangle()) 
+                            .onTapGesture {
+                                selectedDate = retrospect.date // 날짜만 선택해서 이동
+                            }
+                        }
+                    }
+
+                    Spacer()
                 }
             }
-            .scrollIndicators(.hidden)
-
-            Spacer()
-
-            ScrollView { // 통계 자료 목록
-                VStack(alignment: .trailing) {
-                    // 카테고리에 맞는 데이터 개수 표시
-                    Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
-                        .bold()
-                        .padding()
-
-                    HStack {
-                        VStack {
-                            ForEach(filteredRetrospects(), id: \.self) { retrospect in
-                                Text(retrospect.content ?? "")
-                            }
-                        }
-
-                        Spacer()
-
-                        VStack {
-                            ForEach(filteredRetrospects(), id: \.self) { retrospect in
-                                Text(formattedDate(retrospect.date))
-                            }
-                        }
-                    }
-
-                }
-                Spacer()
+            .padding()
+            .navigationDestination(item: $selectedDate) { date in
+                RetrospectDetailView(selectedDate: date)
             }
         }
-        .padding()
     }
 
     private func filteredRetrospects() -> [Retrospect] {
