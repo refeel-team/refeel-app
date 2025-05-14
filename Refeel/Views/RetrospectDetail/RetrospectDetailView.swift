@@ -47,7 +47,16 @@ struct RetrospectDetailView: View {
                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
         }
         .onAppear {
-            print(selectedDate)
+            guard let selectedDate else { return }
+
+            if let retrospectData = retrospects.first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+            }) {
+                text = retrospectData.content ?? ""
+                selectedCategory = retrospectData.category
+                isViewing = true
+            } else {
+                isViewing = false
+            }
         }
         .padding()
         .sheet(isPresented: $showCategorySheet) {
@@ -76,14 +85,13 @@ struct RetrospectDetailView: View {
         }
         .padding()
 
-
-
         ZStack {
             Button {
                 // TODO: 컨텐츠가 비어있을때도 유저 알림 필요
                 guard let selectedCategory else { return }
                 // 카테고리 선택 안된경우 버튼 동작 안되도록, 나중에 메세지로 표시하거나 해서 유저한태 알려줄것 필요
-                let retrospect = Retrospect(date: Date(), content: text, category: selectedCategory)
+                let retrospect = Retrospect(date: selectedDate ?? Date(), content: text, category: selectedCategory)
+                // 셀렉티드 데이터 일치 필요 옵셔널 해결
                 context.insert(retrospect)
 
                 do {
