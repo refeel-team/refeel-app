@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct StatisticsView: View {
     @State private var selectedYear = Calendar.current.component(.year, from: Date())
     @State private var selectedMonth = Calendar.current.component(.month, from: Date())
     
     @State private var selectedCatagory: String? = nil
+    
+    @Query private var retrospects: [Retrospect]
     
     var body: some View {
             VStack {
