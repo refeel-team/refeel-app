@@ -14,26 +14,23 @@ struct SplashView: View {
     @State private var isErasing = false
     @State private var isSecondTextShowing = false
 
-    private let firstText = "오늘의 나를 돌아보세요."
-    private let secondText = "어떤 점이 아쉬웠는지, 다시 마주해요.🙂"
+    private let firstText = "Refeel"
+    private let secondText = "다시 마주하다"
 
     var body: some View {
         ZStack {
             Color.white.edgesIgnoringSafeArea(.all)
             VStack {
                 // 회고 아이콘
-                Image(systemName: "pencil.circle.fill")
-                    .font(.system(size: 100))
-                    .foregroundColor(.blue)
-                    .padding(.bottom, 40)
+                Image("refeel")
+                    .padding(.bottom, 20)
 
                 Text(textToShow)
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.black)
                     .multilineTextAlignment(.center)
                     .onAppear {
-
                         typeText()
                     }
             }
@@ -48,7 +45,7 @@ struct SplashView: View {
 
     func typeText() {
         var index = 0
-        let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.15, repeats: true) { timer in
             if index < firstText.count {
                 let currentIndex = firstText.index(firstText.startIndex, offsetBy: index)
                 textToShow.append(firstText[currentIndex])
