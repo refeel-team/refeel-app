@@ -15,7 +15,7 @@ struct HomeView: View {
             VStack(spacing: 0) {
                 HStack {
                     Text("Refeel")
-                        .font(.largeTitle)
+                        .font(.title)
                         .fontWeight(.bold)
                     Spacer()
                 }

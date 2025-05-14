@@ -26,6 +26,7 @@ struct CalendarView: View {
                 } label: {
                     Image(systemName: "chevron.left")
                         .foregroundStyle(Color.primary)
+                        .fontWeight(.bold)
                 }
 
                 Spacer()
@@ -43,10 +44,11 @@ struct CalendarView: View {
                 } label: {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
+                        .fontWeight(.bold)
                 }
             }
             .padding(.horizontal, 40)
-            .padding()
+            .padding(.vertical)
 
             //달력
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
@@ -55,7 +57,7 @@ struct CalendarView: View {
                         .font(.title3)
                 }
             }
-            .padding(.top)
+            .padding(.top, 8)
             .padding(.horizontal)
 
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 22) {
@@ -64,12 +66,12 @@ struct CalendarView: View {
                     let isCurrentMonth = Calendar.current.isDate(date, equalTo: currentDate, toGranularity: .month)
                     let isFuture = date > Date()
 
-                    VStack(spacing: 4) {
+                    VStack(spacing: 6) {
                         if isCurrentMonth {
                             ZStack {
                                 if isToday {
                                     Circle()
-                                        .frame(width: 26, height: 26)
+                                        .frame(width: 24, height: 24)
                                         .foregroundStyle(Color.blue.opacity(0.2))
                                 }
 
@@ -77,7 +79,7 @@ struct CalendarView: View {
                                     .foregroundStyle(isToday ? .blue : (isFuture ? Color.primary.opacity(0.5) : Color.primary))
                                     .fontWeight(isToday ? .bold : .regular)
                             }
-                            .frame(height: 28)
+                            .frame(height: 30)
 
                             if !isFuture {
                                 if isWritten(date: date) {
@@ -95,12 +97,14 @@ struct CalendarView: View {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 40, height: 40)
                                             .foregroundStyle(isToday ? Color.blue.opacity(0.8) : Color.gray.opacity(0.4))
+                                            .shadow(radius: 1, y: 2)
                                     }
                                 }
                             } else {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
                                     .foregroundStyle(Color.gray.opacity(0.8))
+                                    .shadow(radius: 1, y: 2)
                             }
                         }
                     }

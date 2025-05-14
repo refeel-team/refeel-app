@@ -36,7 +36,7 @@ struct SplashView: View {
             }
             // 시간 지나면 종료
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     self.isActive = false
                 }
             }
