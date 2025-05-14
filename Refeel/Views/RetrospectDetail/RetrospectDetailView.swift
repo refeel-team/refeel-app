@@ -23,7 +23,6 @@ struct RetrospectDetailView: View {
     // 화면 pop하기 위한 dismiss
     @Environment(\.dismiss) private var dismiss
 
-
     let categories = Category.allCases
 
     var body: some View {
@@ -90,10 +89,23 @@ struct RetrospectDetailView: View {
                 // TODO: 컨텐츠가 비어있을때도 유저 알림 필요
                 guard let selectedCategory else { return }
                 // 카테고리 선택 안된경우 버튼 동작 안되도록, 나중에 메세지로 표시하거나 해서 유저한태 알려줄것 필요
-                let retrospect = Retrospect(date: selectedDate ?? Date(), content: text, category: selectedCategory)
-                // 셀렉티드 데이터 일치 필요 옵셔널 해결
-                context.insert(retrospect)
 
+                let dateForSearch = Calendar.current.startOfDay(for: selectedDate ?? Date())
+                // 선택된 날짜 가지고 오기 무조건 가지고 와지는데 옵셔널이라 안가지고 와지면
+                // 기본 Date넣기
+
+                if let existing = retrospects.first(where: { ret in
+                    Calendar.current.isDate(ret.date, inSameDayAs: dateForSearch)
+                }) {
+                    // 데이터가 조회된 경우 , 조회된 곳에 데이터 업데이트. save필요
+                    existing.content = text
+                    existing.category = selectedCategory
+                } else {
+                    // 데이터가 조회되지 않은 경우
+                    let retrospect = Retrospect(date: selectedDate ?? Date(), content: text, category: selectedCategory)
+                    // 셀렉티드 데이터 일치 필요,옵셔널("??") 해결 해야함.
+                    context.insert(retrospect)
+                }
                 do {
                     try context.save()
                 } catch {
@@ -116,7 +128,6 @@ struct RetrospectDetailView: View {
             .padding()
         }
     }
-
 }
 
 #Preview {
