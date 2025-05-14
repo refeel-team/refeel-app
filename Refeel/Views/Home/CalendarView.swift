@@ -65,7 +65,7 @@ struct CalendarView: View {
                             Text("\(Calendar.current.component(.day, from: date))")
                                 .foregroundStyle(isToday ? .red : Color.primary)
                                 .fontWeight(isToday ? .bold : .regular)
-                            
+
                             if !isFuture {
                                 if isWritten(date: date) {
                                     Button {
@@ -130,13 +130,18 @@ extension CalendarView {
         return dateFormatter.string(from: by)
     }
 
-    //데이트를 받고 그 데이터베이스에 조회해서 트루펄스 반환하도록함
+    // date를 받고 그 데이터베이스에 조회해서 트루펄스 반환하도록함
     func isWritten(date: Date) -> Bool {
         let dateforSearch = Calendar.current.startOfDay(for: date)
         let isExist = retrospects.contains(where: {
             Calendar.current.isDate($0.date, inSameDayAs: dateforSearch)
         })
         return isExist
+
+        // 프리뷰에서 아이콘 보고싶을때 위에 내부코드 전부 주석처리하시고
+        // 아래 주석코드 활성화 하시면 프리뷰로 확인 가능합니다.
+        //let day = Calendar.current.component(.day, from: date)
+        //return day % 4 == 0 ? true : false
     }
 }
 

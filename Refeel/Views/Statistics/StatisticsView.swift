@@ -115,7 +115,6 @@ struct StatisticsView: View {
                             }
                         }
                     }
-
                     Spacer()
                 }
             }
