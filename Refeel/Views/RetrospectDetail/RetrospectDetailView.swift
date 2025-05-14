@@ -8,18 +8,28 @@
 import SwiftUI
 import SwiftData
 
-struct RestrospectDetailView: View {
+struct RetrospectDetailView: View {
     @State private var text: String = ""
     @State private var selectedCategory: Category? = nil
     @State private var showCategorySheet = false
-    
+    // 회고 데이터 : 외부 주입 데이터 가져올 경우 이게 맞는지?
+    let existingRetrospect: Retrospect?
+    // 쓰기 모드인지 보기 모드인지 분기
+    @State private var isViewing: Bool = false
+    // 조회 쿼리문
+    @Query(sort: \Retrospect.date, order: .reverse) private var retrospects: [Retrospect]
+
+    init(existingRetrospect: Retrospect? = nil) {
+        self.existingRetrospect = existingRetrospect
+    }
+
     @Environment(\.modelContext) private var context
     // 저장소 위치
     @Environment(\.dismiss) private var dismiss
     // 화면 pop하기 위한 dismiss
-    
+
     let categories = Category.allCases
-    
+
     var body: some View {
         Button {
             showCategorySheet = true
@@ -30,51 +40,56 @@ struct RestrospectDetailView: View {
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(8)
         }
-        
-        ScrollView {
-            VStack(alignment: .leading) {
-                Text("오늘의 성과는 무엇이었나요?")
-                    .font(.headline)
-                
-                TextEditor(text: $text)
-                    .frame(height: 200)
-                    .padding()
-                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
-            }
-            .padding()
-            .sheet(isPresented: $showCategorySheet) {
-                VStack(spacing: 20) {
-                    Text("내 하루에 담을 키워드를 골라주세요.")
-                        .font(.title3)
-                    Text("딱 한 개만 고르실 수 있어요")
-                        .font(.headline)
-                        .foregroundStyle(.gray)
-                    
-                    FlowLayout(spacing: 10, lineSpacing: 10) {
-                        ForEach(categories, id: \.self) { category in
-                            TagView(category, selectedCategory == category ? .blue : .gray)
-                                .onTapGesture {
-                                    selectedCategory = category
-                                    showCategorySheet = false
-                                }
-                        }
-                    }
-                    .padding()
-                    
-                    Spacer()
-                }
-                .padding(.top, 40)
-                .presentationDetents([.fraction(0.8), .medium])
-            }
-            .padding()
+
+
+        // 글 보기 화면
+        // isViewing으로 쓰기/보기 모드 분류
+        VStack(alignment: .leading) {
+            Text("오늘의 성과는 무엇이었나요?")
+                .font(.headline)
+            TextEditor(text: $text)
+                .frame(height: 200)
+                .padding()
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
         }
+
+        .padding()
+        .sheet(isPresented: $showCategorySheet) {
+            VStack(spacing: 20) {
+                Text("내 하루에 담을 키워드를 골라주세요.")
+                    .font(.title3)
+                Text("딱 한 개만 고르실 수 있어요")
+                    .font(.headline)
+                    .foregroundStyle(.gray)
+
+                FlowLayout(spacing: 10, lineSpacing: 10) {
+                    ForEach(categories, id: \.self) { category in
+                        TagView(category, selectedCategory == category ? .blue : .gray)
+                            .onTapGesture {
+                                selectedCategory = category
+                                showCategorySheet = false
+                            }
+                    }
+                }
+                .padding()
+
+                Spacer()
+            }
+            .padding(.top, 40)
+            .presentationDetents([.fraction(0.8), .medium])
+        }
+        .padding()
+
+
+
         ZStack {
             Button {
+                // TODO: 컨텐츠가 비어있을때도 유저 알림 필요
                 guard let selectedCategory else { return }
                 // 카테고리 선택 안된경우 버튼 동작 안되도록, 나중에 메세지로 표시하거나 해서 유저한태 알려줄것 필요
                 let retrospect = Retrospect(date: Date(), content: text, category: selectedCategory)
                 context.insert(retrospect)
-                
+
                 do {
                     try context.save()
                 } catch {
@@ -97,24 +112,9 @@ struct RestrospectDetailView: View {
             .padding()
         }
     }
-    @ViewBuilder
-    func TagView(_ tag: Category, _ color: Color) -> some View {
-        HStack(spacing: 10) {
-            Text(tag.rawValue)
-                .font(.callout)
-                .fontWeight(.semibold)
-        }
-        .frame(height: 35)
-        .foregroundStyle(.white)
-        .padding(.horizontal, 10)
-        .background {
-            Capsule()
-                .fill(color.gradient)
-        }
-        
-    }
+
 }
 
 #Preview {
-    RestrospectDetailView()
+    RetrospectDetailView()
 }
