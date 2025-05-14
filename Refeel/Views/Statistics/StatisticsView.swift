@@ -144,7 +144,6 @@ struct StatisticsView: View {
         let earliestPerDay = grouped.values.compactMap { group in
             group.sorted { $0.date < $1.date }.first
         }
-
         // 최신 날짜가 위로 오도록 정렬
         return earliestPerDay.sorted { $0.date > $1.date }
     }
