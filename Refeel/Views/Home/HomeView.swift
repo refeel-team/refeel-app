@@ -12,7 +12,16 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
+            VStack(spacing: 0) {
+                HStack {
+                    Text("Refeel")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    Spacer()
+                }
+                .padding(.top)
+                .padding(.horizontal)
+
                 CalendarView(selectedDate: $selectedDate)
             }
             .navigationDestination(item: $selectedDate) { date in
