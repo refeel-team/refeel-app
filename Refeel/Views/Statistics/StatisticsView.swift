@@ -52,7 +52,7 @@ struct StatisticsView: View {
                         VStack {
                             // 연도 선택 Picker
                             Picker("연도", selection: $selectedYear) {
-                                ForEach(2025...2027, id: \.self) { year in
+                                ForEach(2015...2035, id: \.self) { year in
                                     Text(String(format: "%d년", year)) // 연도 표시
                                 }
                             }
