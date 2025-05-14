@@ -167,16 +167,6 @@ struct StatisticsView: View {
                             }
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
-                            .onTapGesture {
-                                selectedDate = retrospect.date
-                            }
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive) {
-                                    // 삭제는 나중에
-                                } label: {
-                                    Label("삭제", systemImage: "trash")
-                                }
-                            }
                         }
                     }
                 }
