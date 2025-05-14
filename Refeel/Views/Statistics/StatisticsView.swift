@@ -15,8 +15,19 @@ struct StatisticsView: View {
     let categories = Category.allCases
     @State private var selectedCategory: Category? = nil
     @State private var selectedDate: Date? = nil
+    @State private var isYearSheetPresented = false
+    @State private var isMonthSheetPresented = false
 
     @Query var retrospects: [Retrospect]
+
+    var sortedCategoriesByCount: [Category] {
+        let counts = Dictionary(grouping: retrospects, by: \.category)
+            .mapValues { $0.count }
+
+        return categories.sorted {
+            (counts[$0] ?? 0) > (counts[$1] ?? 0)
+        }
+    }
 
     var body: some View {
         NavigationStack {
@@ -28,23 +39,70 @@ struct StatisticsView: View {
 
                     Spacer()
 
-                    Picker("연도", selection: $selectedYear) {
-                        ForEach(2025...2027, id: \.self) { year in
-                            Text(String(format: "%d년", year))
-                        }
+                    Button {
+                        isYearSheetPresented.toggle() // 버튼 클릭 시 바텀 시트 표시
+                    } label: {
+                        Text(String(format: "%d년", selectedYear)) // 선택된 연도 표시
+                            .foregroundColor(.blue)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8).strokeBorder())
                     }
-                    .buttonStyle(.bordered)
 
-                    Picker("월", selection: $selectedMonth) {
-                        ForEach(1...12, id: \.self) { month in
-                            Text("\(month)월")
+                    .sheet(isPresented: $isYearSheetPresented) {
+                        VStack {
+                            // 연도 선택 Picker
+                            Picker("연도", selection: $selectedYear) {
+                                ForEach(2025...2027, id: \.self) { year in
+                                    Text(String(format: "%d년", year)) // 연도 표시
+                                }
+                            }
+                            .pickerStyle(WheelPickerStyle()) // 회전형 Picker
+                            .frame(height: 150)
+
+                            Button("확인") {
+                                isYearSheetPresented = false // 바텀 시트 닫기
+                            }
+                            .padding()
+                            .foregroundColor(.blue)
                         }
+                        .padding()
+                        .presentationDetents([.fraction(0.4)])
                     }
-                    .buttonStyle(.bordered)
+
+                    Button {
+                        isMonthSheetPresented.toggle() // 버튼 클릭 시 바텀 시트 표시
+                    } label: {
+                        Text("\(selectedMonth)월")
+                            .foregroundColor(.blue)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 8).strokeBorder())
+                    }
+
+                    .sheet(isPresented: $isMonthSheetPresented) {
+                        VStack {
+                            // 연도 선택 Picker
+                            Picker("월", selection: $selectedMonth) {
+                                ForEach(1...12, id: \.self) { month in
+                                    Text("\(month)월")
+                                }
+                            }
+                            .pickerStyle(WheelPickerStyle()) // 회전형 Picker
+                            .frame(height: 150)
+
+                            Button("확인") {
+                                isMonthSheetPresented = false // 바텀 시트 닫기
+                            }
+                            .padding()
+                            .foregroundColor(.blue)
+                        }
+                        .padding()
+                        .presentationDetents([.fraction(0.4)])
+                    }
+
                 }
 
                 ScrollView(.horizontal) {
-                    HStack {
+                    HStack(spacing: 16) {
                         Button {
                             selectedCategory = nil
                         } label: {
@@ -63,14 +121,13 @@ struct StatisticsView: View {
                                         .frame(width: 70, height: 30)
                                 }
                                 .padding(.horizontal, 8)
-
                         }
 
-                        ForEach(categories, id: \.self) { category in
+                        ForEach(sortedCategoriesByCount, id: \.self) { category in
                             Button {
                                 selectedCategory = category
                             } label: {
-                                Text(category.rawValue)
+                                Text("\(category.rawValue)")
                                     .foregroundStyle(.black)
                                     .fontWeight(.semibold)
                                     .padding()
@@ -93,13 +150,13 @@ struct StatisticsView: View {
 
                 Spacer()
 
-                ScrollView { // 통계 자료 목록
-                    VStack(alignment: .trailing) {
-                        // 카테고리에 맞는 데이터 개수 표시
-                        Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
-                            .bold()
-                            .padding()
-
+                List {
+                    // 카테고리 개수 표시 - Section header에 넣기
+                    Section(header:
+                                Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
+                        .font(.headline)
+                        .padding(.vertical, 4)
+                    ) {
                         ForEach(filteredRetrospects(), id: \.self) { retrospect in
                             HStack {
                                 Text(retrospect.content ?? "")
@@ -111,12 +168,22 @@ struct StatisticsView: View {
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                selectedDate = retrospect.date // 날짜만 선택해서 이동
+                                selectedDate = retrospect.date
+                            }
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    // 삭제는 나중에
+                                } label: {
+                                    Label("삭제", systemImage: "trash")
+                                }
                             }
                         }
                     }
-                    Spacer()
                 }
+                .listStyle(.insetGrouped)
+                .scrollContentBackground(.hidden)
+                .background(Color.white)
+
             }
             .padding()
             .navigationDestination(item: $selectedDate) { date in
@@ -158,6 +225,7 @@ struct StatisticsView: View {
         formatter.dateFormat = "YYYY-MM-dd"
         return formatter.string(from: date)
     }
+
 }
 
 #Preview {
