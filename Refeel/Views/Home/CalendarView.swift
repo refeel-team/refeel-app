@@ -65,7 +65,7 @@ struct CalendarView: View {
                             Text("\(Calendar.current.component(.day, from: date))")
                                 .foregroundStyle(isToday ? .red : Color.primary)
                                 .fontWeight(isToday ? .bold : .regular)
-
+                            
                             if !isFuture {
                                 if isWritten(date: date) {
                                     Button {
@@ -130,11 +130,13 @@ extension CalendarView {
         return dateFormatter.string(from: by)
     }
 
-    // 추후 구현, 데이트를 받고 그 데이터베이스에 조회해서 트루펄스 반환하도록함
-    // 지금은 4일당 하루 체크하는걸로 함
+    //데이트를 받고 그 데이터베이스에 조회해서 트루펄스 반환하도록함
     func isWritten(date: Date) -> Bool {
-        let day = Calendar.current.component(.day, from: date)
-        return day % 4 == 0 ? true : false
+        let dateforSearch = Calendar.current.startOfDay(for: date)
+        let isExist = retrospects.contains(where: {
+            Calendar.current.isDate($0.date, inSameDayAs: dateforSearch)
+        })
+        return isExist
     }
 }
 
