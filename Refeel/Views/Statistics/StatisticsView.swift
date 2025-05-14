@@ -20,85 +20,91 @@ struct StatisticsView: View {
 
 
     var body: some View {
-        VStack {
-            HStack { // 타이틀 제목, 년도, 월 선택
-                Text("통계 화면 제목")
-
-                Spacer()
-
-                Picker("연도", selection: $selectedYear) {
-                    ForEach(2025...2027, id: \.self) { year in
-                        Text(String(format: "%d년", year))
-                    }
-                }
-                .buttonStyle(.bordered)
-
-                Picker("월", selection: $selectedMonth) {
-                    ForEach(1...12, id: \.self) { month in
-                        Text("\(month)월")
-                    }
-                }
-                .buttonStyle(.bordered)
-            }
-
-            ScrollView(.horizontal) { // 가로 스크롤 카테고리
-                HStack {
-                    ForEach(Array(categories.enumerated()), id: \.offset) { index, category in
-                        Button {
-                            selectedCategory = category
-                        } label: {
-                            Text(category.rawValue)
-                                .font(.caption)
-                                .foregroundColor(.white)
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 6)
-                                .background(
-                                    Capsule()
-                                        .fill(selectedCategory == category ? .green : .green.opacity(0.6))
-                                )
+            VStack {
+                HStack { // 타이틀 제목, 년도, 월 선택!!
+                    Text("통계 화면 제목")
+                        .font(.title)
+                        .bold()
+                    
+                    Spacer()
+                    
+                    Picker("연도", selection: $selectedYear) {
+                        ForEach(2025...2027, id: \.self) { year in
+                            Text(String(format: "%d년", year))
                         }
                     }
-
+                    .buttonStyle(.bordered)
+                    
+                    Picker("월", selection: $selectedMonth) {
+                        ForEach(1...12, id: \.self) { month in
+                            Text("\(month)월")
+                        }
+                    }
+                    .buttonStyle(.bordered)
                 }
-            }
-            .scrollIndicators(.hidden)
-
-            Spacer()
-
-            if let category = selectedCategory {
-                let filtered = filteredRetrospects()
-                ScrollView {
-                    VStack(alignment: .trailing) {
-                        Text("\(category.rawValue): 10개")
-                            .bold()
-                            .padding()
-
-                        HStack {
-                            VStack(alignment: .leading) {
-                                ForEach(filtered, id: \.self) { retrospect in
-                                    Text(retrospect.content ?? "데이터가 비어있음")
-                                }
-                            }
-
-                            Spacer()
-
-                            VStack {
-                                ForEach(filtered, id: \.self) { retrospect in
-                                    Text(formattedDate(retrospect.date))
-                                }
+                
+                ScrollView(.horizontal) { // 가로 스크롤 카테고리
+                    HStack {
+                        ForEach(Category.allCases, id: \.self) { category in
+                            Button {
+                                selectedCatagory = category.rawValue
+                            } label: {
+                                Text(category.rawValue)
+                                    .foregroundStyle(.black)
+                                    .fontWeight(.semibold)
+                                    .padding()
+                                    .background {
+                                        Capsule()
+                                            .fill(selectedCatagory == category.rawValue ? .green : .yellow)
+                                            .frame(width: 70, height: 30)
+                                        
+                                        Capsule()
+                                            .stroke(lineWidth: 1)
+                                            .fill(.black)
+                                            .frame(width: 70, height: 30)
+                                    }
+                                    .padding(.horizontal,8)
                             }
                         }
                     }
                 }
+                .scrollIndicators(.hidden)
+                
                 Spacer()
-            } else {
-                Label("카테고리를 선택해주세요.", systemImage: "bubble.right.circle.fill")
-                    .font(.title2)
-                    .bold()
-                    .padding(.bottom, 350)
+                
+                if selectedCatagory == nil {
+                    Label("카테고리를 선택해주세요.", systemImage: "bubble.right.circle.fill")
+                        .font(.title2)
+                        .bold()
+                        .padding(.bottom, 350)
+                } else {
+                    ScrollView { // 통계 자료 목록
+                        VStack(alignment: .trailing) {
+                            Text("\(selectedCatagory ?? ""): 10개")
+                                .bold()
+                                .padding()
+                            
+                            HStack {
+                                VStack {
+                                    ForEach(1..<11) { _ in
+                                        Text("글 1")
+                                    }
+                                }
+                                
+                                Spacer()
+                                
+                                VStack {
+                                    ForEach(1..<11) { _ in
+                                        Text("05-12")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Spacer()
+                }
             }
-        }
-        .padding()
+            .padding()
     }
     private func filteredRetrospects() -> [Retrospect] {
         guard let category = selectedCategory else { return [] }
