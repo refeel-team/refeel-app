@@ -44,6 +44,7 @@ struct CalendarView: View {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
                         .font(.cafe24SsurroundAir(size: 16))
+                        .fontWeight(.bold)
                 }
             }
             .padding(.horizontal, 40)
@@ -71,12 +72,12 @@ struct CalendarView: View {
                                 if isToday {
                                     Circle()
                                         .frame(width: 24, height: 24)
-                                        .foregroundStyle(Color.blue.opacity(0.2))
+                                        .foregroundStyle(Color.primaryColor)
                                 }
 
                                 Text("\(Calendar.current.component(.day, from: date))")
                                     .font(.cafe24SsurroundAir(size: 16))
-                                    .foregroundStyle(isToday ? .blue : (isFuture ? Color.primary.opacity(0.5) : Color.primary))
+                                    .foregroundStyle(isToday ? Color.white : (isFuture ? Color.primary.opacity(0.5) : Color.primary))
                                     .fontWeight(isToday ? .bold : .regular)
                             }
                             .frame(height: 30)
@@ -96,7 +97,7 @@ struct CalendarView: View {
                                     } label: {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 38, height: 38)
-                                            .foregroundStyle(isToday ? Color.blue.opacity(0.8) : Color.gray.opacity(0.4))
+                                            .foregroundStyle(isToday ? Color.primaryColor : Color.gray.opacity(0.4))
                                             .shadow(radius: 1, y: 2)
                                     }
                                 }

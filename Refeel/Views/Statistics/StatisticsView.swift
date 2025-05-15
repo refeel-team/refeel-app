@@ -75,7 +75,6 @@ struct StatisticsView: View {
                             .pickerStyle(WheelPickerStyle())
                             .frame(height: 150)
 
-
                             Button{
                                 isYearSheetPresented = false
                             } label : {
@@ -114,6 +113,10 @@ struct StatisticsView: View {
                                     lineWidth: 1)
                         }
                     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8299723bd4f4c3df6c251cc58fd89944764de96b
                     .sheet(isPresented: $isMonthSheetPresented) {
                         VStack {
                             // 연도 선택 Picker
@@ -188,6 +191,9 @@ struct StatisticsView: View {
                             }
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
+                            .onTapGesture {
+                                selectedDate = retrospect.date
+                            }
                         }
                     }
                 }

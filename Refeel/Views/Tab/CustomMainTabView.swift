@@ -38,7 +38,7 @@ struct CustomMainTabView: View {
                     action: { selectedIndex = 1 }
                 )
             }
-            .padding(.vertical, 10)
+            .padding(.vertical, 16)
             .background(Color.white.shadow(radius: 4))
         }
         .edgesIgnoringSafeArea(.bottom)
