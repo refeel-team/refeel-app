@@ -181,8 +181,6 @@ struct StatisticsView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .font(.cafe24SsurroundAir(size: 16))
                                 
-                                Spacer()
-                            
                                 Text(formattedDate(retrospect.date))
                                     .foregroundStyle(.gray)
                                     .font(.cafe24SsurroundAir(size: 16))
