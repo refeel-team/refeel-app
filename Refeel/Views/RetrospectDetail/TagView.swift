@@ -24,14 +24,14 @@ struct TagView<T: TagRepresentable>: View {
     let color: Color
 
     var body: some View {
-        HStack(spacing: 10) {
+        HStack {
             Text(tag.tagText)
                 .fontWeight(.semibold)
-                .font(.cafe24SsurroundAir(size: 14))
+                .font(.cafe24SsurroundAir(size: 12))
         }
-        .frame(height: 35)
         .foregroundStyle(.white)
         .padding(.horizontal, 10)
+        .padding(.vertical, 6)
         .background {
             Capsule()
                 .fill(color.gradient)
@@ -44,7 +44,7 @@ struct TagView_Previews: PreviewProvider {
     static var previews: some View {
         VStack(spacing: 10) {
             TagView(tag: Category.workout, color: .yellow)
-            TagView(tag: StringTag(tagText: "카테고리 선택"), color: .yellow)
+            TagView(tag: StringTag(tagText: "카테고리를 선택해주세요"), color: .yellow)
         }
         .padding()
         .previewLayout(.sizeThatFits)
