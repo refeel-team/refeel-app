@@ -39,8 +39,13 @@ struct CustomMainTabView: View {
                 )
             }
             .padding(.vertical, 16)
+            .padding(.bottom, 12)
             .background(Color.white.shadow(radius: 4))
         }
         .edgesIgnoringSafeArea(.bottom)
     }
+}
+
+#Preview {
+    CustomMainTabView()
 }
