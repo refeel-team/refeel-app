@@ -28,13 +28,11 @@ struct CalendarView: View {
                         .foregroundStyle(Color.primary)
                         .fontWeight(.bold)
                 }
-
                 Spacer()
 
                 Text(dateFormatting(by: currentDate))
                     .font(.title2)
                     .fontWeight(.semibold)
-
                 Spacer()
 
                 Button {
@@ -60,7 +58,7 @@ struct CalendarView: View {
             .padding(.top, 8)
             .padding(.horizontal)
 
-            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 22) {
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 16) {
                 ForEach(generateCalendar(), id: \.self) { date in
                     let isToday = Calendar.current.isDateInToday(date)
                     let isCurrentMonth = Calendar.current.isDate(date, equalTo: currentDate, toGranularity: .month)
@@ -88,21 +86,21 @@ struct CalendarView: View {
                                     } label: {
                                         Image("refeel")
                                             .resizable()
-                                            .frame(width: 40, height: 40)
+                                            .frame(width: 38, height: 38)
                                     }
                                 } else {
                                     Button {
                                         selectedDate = date
                                     } label: {
                                         RoundedRectangle(cornerRadius: 10)
-                                            .frame(width: 40, height: 40)
+                                            .frame(width: 38, height: 38)
                                             .foregroundStyle(isToday ? Color.blue.opacity(0.8) : Color.gray.opacity(0.4))
                                             .shadow(radius: 1, y: 2)
                                     }
                                 }
                             } else {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 40, height: 40)
+                                    .frame(width: 38, height: 38)
                                     .foregroundStyle(Color.gray.opacity(0.8))
                                     .shadow(radius: 1, y: 2)
                             }
