@@ -26,8 +26,8 @@ struct TagView<T: TagRepresentable>: View {
     var body: some View {
         HStack(spacing: 10) {
             Text(tag.tagText)
-                .font(.callout)
                 .fontWeight(.semibold)
+                .font(.cafe24SsurroundAir(size: 14))
         }
         .frame(height: 35)
         .foregroundStyle(.white)
