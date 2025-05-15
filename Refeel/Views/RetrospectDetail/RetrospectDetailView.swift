@@ -36,9 +36,8 @@ struct RetrospectDetailView: View {
                 if let date = selectedDate {
                     Label {
                         Text(formattedDate(date))
-                            .font(.title3)
                             .foregroundColor(.primary)
-                            .fontWeight(.bold)
+                            .font(.cafe24SsurroundAir(size: 16))
                     } icon: {
                         Image(systemName: "calendar")
                             .foregroundColor(.primary)
@@ -55,7 +54,6 @@ struct RetrospectDetailView: View {
                             TagView(tag: StringTag(tagText: "카테고리를 선택 해주세요"), color: Color.primaryColor)
                         }
                     }
-                    .font(.subheadline)
                     .padding(.vertical, 6)
                     .padding(.horizontal, 12)
                 }
@@ -68,10 +66,11 @@ struct RetrospectDetailView: View {
 
             VStack(alignment: .leading) {
                 Text("오늘의 아쉬웠던 점은 무엇이었나요?")
-                    .font(.headline)
+                    .font(.cafe24SsurroundAir(size: 16))
                 TextEditor(text: $text)
                     .frame(height: 200)
                     .padding()
+                    .font(.cafe24SsurroundAir(size: 16))
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
             }
             .onAppear {
@@ -153,7 +152,7 @@ struct RetrospectDetailView: View {
                 dismiss()
             } label: {
                 Text(isViewing ? "수정하기" : "저장하기")
-                    .fontWeight(.semibold)
+                    .font(.cafe24SsurroundAir(size: 16))
                     .padding(.vertical, 15)
                     .frame(maxWidth: .infinity)
                     .foregroundStyle(.white)
