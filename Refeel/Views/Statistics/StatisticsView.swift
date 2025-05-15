@@ -117,6 +117,7 @@ struct StatisticsView: View {
                     }
                     Spacer()
                 }
+                .background(Color(.systemBackground))
             }
             .padding()
             .navigationDestination(item: $selectedDate) { date in
