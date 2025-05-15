@@ -5,19 +5,51 @@
 //  Created by Abel on 5/14/25.
 //
 import SwiftUI
+import Foundation
 
+protocol TagRepresentable {
+    var tagText: String { get }
+}
 
-func TagView(_ tag: Category, _ color: Color) -> some View {
-    HStack(spacing: 10) {
-        Text(tag.rawValue)
-            .font(.callout)
-            .fontWeight(.semibold)
+extension Category: TagRepresentable {
+    var tagText: String { rawValue }
+}
+
+struct StringTag: TagRepresentable {
+    let tagText: String
+}
+
+struct TagView<T: TagRepresentable>: View {
+    let tag: T
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Text(tag.tagText)
+                .font(.callout)
+                .fontWeight(.semibold)
+        }
+        .frame(height: 35)
+        .foregroundStyle(.white)
+        .padding(.horizontal, 10)
+        .background {
+            Capsule()
+                .fill(color.gradient)
+                .overlay(
+                    Capsule().stroke(.primary, lineWidth: 1)
+                )
+        }
     }
-    .frame(height: 35)
-    .foregroundStyle(.white)
-    .padding(.horizontal, 10)
-    .background {
-        Capsule()
-            .fill(color.gradient)
+}
+
+
+struct TagView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack(spacing: 10) {
+            TagView(tag: Category.workout, color: .yellow)
+            TagView(tag: StringTag(tagText: "카테고리 선택"), color: .yellow)
+        }
+        .padding()
+        .previewLayout(.sizeThatFits)
     }
 }
