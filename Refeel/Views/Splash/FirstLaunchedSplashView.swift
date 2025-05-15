@@ -20,7 +20,8 @@ struct FirstLaunchedSplashView: View {
 
     var body: some View {
         ZStack {
-            Color.white.edgesIgnoringSafeArea(.all)
+            Color("splashBackground")
+                .edgesIgnoringSafeArea(.all)
             VStack {
                 // 회고 아이콘
                 Image("refeel")
@@ -29,7 +30,7 @@ struct FirstLaunchedSplashView: View {
                 Text(textToShow)
                     .font(.cafe24SsurroundAir(size: 24))
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundStyle(.primary)
                     .multilineTextAlignment(.center)
                     .onAppear {
                         typeText()

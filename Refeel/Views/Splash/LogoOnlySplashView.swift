@@ -11,7 +11,9 @@ struct LogoOnlySplashView: View {
     @Binding var isActive: Bool
     var body: some View {
         ZStack {
-            Color.white.ignoresSafeArea()
+            Color("splashBackground")
+                .edgesIgnoringSafeArea(.all)
+
             Image("refeel")
         }
         .onAppear {
