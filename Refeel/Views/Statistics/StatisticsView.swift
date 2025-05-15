@@ -37,7 +37,7 @@ struct StatisticsView: View {
                 HStack { // 타이틀 제목, 년도, 월 선택!!
                     Text("하루 기록들")
                         .bold()
-                        .font(.cafe24SsurroundAir(size: 24))
+                        .font(.cafe24SsurroundAir(size: 16))
 
                     Spacer()
 
@@ -46,11 +46,12 @@ struct StatisticsView: View {
                     } label: {
                         HStack(spacing: 6) {
                             Text(String(format: "%d년", selectedYear))
-                                .font(.cafe24SsurroundAir(size: 16))
+                                .font(.cafe24SsurroundAir(size: 10))
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
+                                .font(.cafe24SsurroundAir(size: 10))
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                         }
                         .padding(.vertical, 8)
@@ -98,10 +99,11 @@ struct StatisticsView: View {
                         HStack(spacing: 6) {
                             Text("\(selectedMonth)월")
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
-                                .font(.cafe24SsurroundAir(size: 16))
+                                .font(.cafe24SsurroundAir(size: 10))
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
+                                .font(.cafe24SsurroundAir(size: 10))
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                         }
                         .padding(.vertical, 8)
