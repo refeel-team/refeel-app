@@ -20,6 +20,8 @@ struct StatisticsView: View {
 
     @Query var retrospects: [Retrospect]
 
+    @Environment(\.colorScheme) var colorScheme
+    
     var sortedCategoriesByCount: [Category] {
         let counts = Dictionary(grouping: retrospects, by: \.category)
             .mapValues { $0.count }
@@ -45,17 +47,19 @@ struct StatisticsView: View {
                         HStack(spacing: 6) {
                             Text(String(format: "%d년", selectedYear))
                                 .font(.cafe24SsurroundAir(size: 16))
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                         }
                         .padding(.vertical, 8)
                         .padding(.horizontal, 16)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.primaryColor, lineWidth: 1)
+                                .stroke(
+                                    colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy,
+                                    lineWidth: 1)
                         }
                     }
 
@@ -93,21 +97,22 @@ struct StatisticsView: View {
                     } label: {
                         HStack(spacing: 6) {
                             Text("\(selectedMonth)월")
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                                 .font(.cafe24SsurroundAir(size: 16))
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                         }
                         .padding(.vertical, 8)
                         .padding(.horizontal, 16)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.primaryColor, lineWidth: 1)
+                                .stroke(
+                                    colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy,
+                                    lineWidth: 1)
                         }
                     }
-
                     .sheet(isPresented: $isMonthSheetPresented) {
                         VStack {
                             // 연도 선택 Picker
@@ -145,15 +150,15 @@ struct StatisticsView: View {
                         Button {
                             selectedCategory = nil
                         } label: {
-                            TagView(tag: StringTag(tagText: "전체 보기"), color: selectedCategory == nil ? Color.primaryColor : .gray)
+                            TagView(tag: StringTag(tagText: "전체 보기"), color: selectedCategory == nil ? Color.midnightSteel : .gray)
                                 .padding(.horizontal, 8)
                         }
-
+                        
                         ForEach(sortedCategoriesByCount, id: \.self) { category in
                             Button {
                                 selectedCategory = category
                             } label: {
-                                TagView(tag: category, color: selectedCategory == category ? Color.primaryColor : .gray)
+                                TagView(tag: category, color: selectedCategory == category ? Color.midnightSteel : .gray)
                             }
                         }
                         .padding(.trailing, 13)
@@ -165,17 +170,17 @@ struct StatisticsView: View {
 
                 List {
                     // 카테고리 개수 표시 - Section header에 넣기
-                    Section(header:
-                                Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
-                        .font(.cafe24SsurroundAir(size: 16))
-                        .padding(.vertical, 4)
+                    Section (header:
+                        Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
+                            .font(.cafe24SsurroundAir(size: 16))
+                            .padding(.vertical, 4)
                     ) {
                         ForEach(filteredRetrospects(), id: \.self) { retrospect in
                             HStack {
                                 Text(retrospect.content ?? "")
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .font(.cafe24SsurroundAir(size: 16))
-
+                                
                                 Text(formattedDate(retrospect.date))
                                     .foregroundStyle(.gray)
                                     .font(.cafe24SsurroundAir(size: 16))
@@ -188,6 +193,7 @@ struct StatisticsView: View {
                         }
                     }
                 }
+                .padding(.horizontal, -20)
                 .listStyle(.insetGrouped)
                 .scrollContentBackground(.hidden)
                 .background(.background)
