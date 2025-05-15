@@ -20,6 +20,8 @@ struct StatisticsView: View {
 
     @Query var retrospects: [Retrospect]
 
+    @Environment(\.colorScheme) var colorScheme
+    
     var sortedCategoriesByCount: [Category] {
         let counts = Dictionary(grouping: retrospects, by: \.category)
             .mapValues { $0.count }
@@ -45,17 +47,19 @@ struct StatisticsView: View {
                         HStack(spacing: 6) {
                             Text(String(format: "%d년", selectedYear))
                                 .fontWeight(.medium)
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                         }
                         .padding(.vertical, 8)
                         .padding(.horizontal, 16)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.primaryColor, lineWidth: 1)
+                                .stroke(
+                                    colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy,
+                                    lineWidth: 1)
                         }
                     }
 
@@ -89,22 +93,21 @@ struct StatisticsView: View {
                         HStack(spacing: 6) {
                             Text("\(selectedMonth)월")
                                 .fontWeight(.medium)
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
-                                .foregroundStyle(Color.primaryColor)
+                                .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                         }
                         .padding(.vertical, 8)
                         .padding(.horizontal, 16)
                         .background {
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.primaryColor, lineWidth: 1)
+                                .stroke(
+                                    colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy,
+                                    lineWidth: 1)
                         }
                     }
-
-
-
                     .sheet(isPresented: $isMonthSheetPresented) {
                         VStack {
                             // 연도 선택 Picker
@@ -134,7 +137,7 @@ struct StatisticsView: View {
                         Button {
                             selectedCategory = nil
                         } label: {
-                            TagView(tag: StringTag(tagText: "전체 보기"), color: selectedCategory == nil ? Color.primaryColor : .gray)
+                            TagView(tag: StringTag(tagText: "전체 보기"), color: selectedCategory == nil ? Color.midnightSteel : .gray)
                                 .padding(.horizontal, 8)
                         }
 
@@ -142,7 +145,7 @@ struct StatisticsView: View {
                             Button {
                                 selectedCategory = category
                             } label: {
-                                TagView(tag: category, color: selectedCategory == category ? Color.primaryColor : .gray)
+                                TagView(tag: category, color: selectedCategory == category ? Color.midnightSteel : .gray)
                             }
                         }
                         .padding(.trailing, 13)
