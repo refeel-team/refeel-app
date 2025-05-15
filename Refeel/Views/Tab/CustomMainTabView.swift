@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CustomMainTabView: View {
+    @Environment(\.colorScheme) var colorScheme
     @State private var selectedIndex = 0
 
     var body: some View {
@@ -39,8 +40,15 @@ struct CustomMainTabView: View {
                 )
             }
             .padding(.vertical, 16)
-            .background(Color.white.shadow(radius: 4))
+            .padding(.bottom, 12)
+            .background(colorScheme == .light ? Color.white : Color.white.opacity(0.1))
+            .shadow(color: colorScheme == .light ? Color.black.opacity(0.1) : Color.white.opacity(0.08), radius: 4)
+
         }
         .edgesIgnoringSafeArea(.bottom)
     }
+}
+
+#Preview {
+    CustomMainTabView()
 }

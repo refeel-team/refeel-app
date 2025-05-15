@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct TabBarButton: View {
+    @Environment(\.colorScheme) var colorScheme
+
     let icon: String
     let title: String
     let isSelected: Bool
@@ -21,7 +23,10 @@ struct TabBarButton: View {
                 Text(title)
                     .font(.cafe24SsurroundAir(size: 14))
             }
-            .foregroundColor(isSelected ? Color.primaryColor : Color.gray)
+            .foregroundColor(
+                isSelected
+                ? (colorScheme == .light ? Color.primaryColor : .white) : (colorScheme == .light ? Color.gray: Color.white.opacity(0.6))
+                )
             .frame(maxWidth: .infinity)
         }
     }
@@ -29,7 +34,7 @@ struct TabBarButton: View {
 
 struct TabBarButton_Previews: PreviewProvider {
     static var previews: some View {
-        VStack(spacing: 20) {
+        HStack(spacing: 20) {
             TabBarButton(
                 icon: "calendar",
                 title: "Calendar",
