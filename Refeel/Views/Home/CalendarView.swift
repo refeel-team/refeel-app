@@ -44,6 +44,7 @@ struct CalendarView: View {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
                         .font(.cafe24SsurroundAir(size: 16))
+                        .fontWeight(.bold)
                 }
             }
             .padding(.horizontal, 40)
