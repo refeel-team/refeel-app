@@ -26,6 +26,7 @@ struct RefeelApp: App {
                 }
             } else {
                 CustomMainTabView()
+                    .dynamicTypeSize(.xSmall ... .xLarge)
             }
         }
         .modelContainer(for: Retrospect.self)
