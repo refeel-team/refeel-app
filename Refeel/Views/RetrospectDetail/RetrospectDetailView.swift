@@ -17,6 +17,9 @@ struct RetrospectDetailView: View {
     @State private var isViewing: Bool = false
     // 조회 쿼리문
     @Query(sort: \Retrospect.date, order: .reverse) private var retrospects: [Retrospect]
+    // 알림 처리
+    @State private var showEmptyContentAlert = false
+
 
     // 저장소 위치
     @Environment(\.modelContext) private var context
@@ -28,79 +31,100 @@ struct RetrospectDetailView: View {
     var body: some View {
         // 글 보기 화면
         // isViewing으로 쓰기/보기 모드 분류
-        HStack {
-            if let date = selectedDate {
-                Text(formattedDate(date))
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-            }
+        VStack {
+            HStack(spacing: 12) {
+                if let date = selectedDate {
+                    Label {
+                        Text(formattedDate(date))
+                            .font(.headline)
+                            .foregroundColor(.gray)
+                    } icon: {
+                        Image(systemName: "calendar")
+                            .foregroundColor(.gray)
+                    }
+                }
 
-            Button {
-                showCategorySheet = true
-            } label: {
-                Text(selectedCategory?.rawValue ?? "카테고리 선택")
+                Button {
+                    showCategorySheet = true
+                } label: {
+                    HStack {
+                        if let category = selectedCategory {
+                            TagView(tag: category, color: .blue)
+                        } else {
+                            TagView(tag: StringTag(tagText: "카테고리를 선택 해주세요"), color: .blue)
+                        }
+                    }
                     .font(.subheadline)
                     .padding(.vertical, 6)
                     .padding(.horizontal, 12)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(6)
-            }
-            Spacer()
-        }
-        .padding(.top, 16)
-        .padding(.horizontal)
-
-        VStack(alignment: .leading) {
-            Text("오늘의 아쉬웠던 점은 무엇이었나요?")
-                .font(.headline)
-            TextEditor(text: $text)
-                .frame(height: 200)
-                .padding()
-                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
-        }
-        .onAppear {
-            guard let selectedDate else { return }
-
-            if let retrospectData = retrospects.first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
-            }) {
-                text = retrospectData.content ?? ""
-                selectedCategory = retrospectData.category
-                isViewing = true
-            } else {
-                isViewing = false
-            }
-        }
-        .padding()
-        .sheet(isPresented: $showCategorySheet) {
-            VStack(spacing: 20) {
-                Text("내 하루에 담을 키워드를 골라주세요.")
-                    .font(.title3)
-                Text("딱 한 개만 고르실 수 있어요")
-                    .font(.headline)
-                    .foregroundStyle(.gray)
-
-                FlowLayout(spacing: 10, lineSpacing: 10) {
-                    ForEach(categories, id: \.self) { category in
-                        TagView(category, selectedCategory == category ? .blue : .gray)
-                            .onTapGesture {
-                                selectedCategory = category
-                                showCategorySheet = false
-                            }
-                    }
                 }
-                .padding()
-
+                .buttonStyle(PlainButtonStyle())
                 Spacer()
             }
-            .padding(.top, 40)
-            .presentationDetents([.fraction(0.8), .medium])
+            .padding(.top, 16)
+            .padding(.horizontal)
+
+
+            VStack(alignment: .leading) {
+                Text("오늘의 아쉬웠던 점은 무엇이었나요?")
+                    .font(.headline)
+                TextEditor(text: $text)
+                    .frame(height: 200)
+                    .padding()
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray))
+            }
+            .onAppear {
+                guard let selectedDate else { return }
+
+                if let retrospectData = retrospects.first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+                }) {
+                    text = retrospectData.content ?? ""
+                    selectedCategory = retrospectData.category
+                    isViewing = true
+                } else {
+                    isViewing = false
+                }
+            }
+//            .padding()
+            .sheet(isPresented: $showCategorySheet) {
+                VStack(spacing: 16) {
+                    Text("내 하루에 담을 키워드를 골라주세요.")
+                        .font(.title3)
+                    Text("딱 한 개만 고르실 수 있어요")
+                        .font(.headline)
+                        .foregroundStyle(.gray)
+
+                    FlowLayout(spacing: 10, lineSpacing: 10) {
+                        ForEach(categories, id: \.self) { category in
+                            TagView(tag: category, color: selectedCategory == category ? .blue : .gray)
+                                .onTapGesture {
+                                    selectedCategory = category
+                                    showCategorySheet = false
+                                }
+                        }
+                    }
+                    .padding()
+
+                    Spacer()
+                }
+                .padding(.top, 40)
+                .presentationDetents([.fraction(0.8), .medium])
+            }
+            .padding()
         }
-        .padding()
+
+        Spacer()
+
+
+        // 저장 또는 수정 버튼
 
         ZStack {
             Button {
                 // TODO: 컨텐츠가 비어있을때도 유저 알림 필요
-                guard let selectedCategory else { return }
+                guard let selectedCategory, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                      showEmptyContentAlert = true
+                      return
+                  }
                 // 카테고리 선택 안된경우 버튼 동작 안되도록, 나중에 메세지로 표시하거나 해서 유저한태 알려줄것 필요
 
                 let dateForSearch = Calendar.current.startOfDay(for: selectedDate ?? Date())
@@ -164,6 +188,11 @@ struct RetrospectDetailView: View {
                     }
                 }
             }
+        }
+        .alert("내용을 입력해주세요", isPresented: $showEmptyContentAlert) {
+            Button("확인", role: .cancel) {}
+        } message: {
+            Text("오늘의 아쉬웠던 점을 기록해주세요.")
         }
     }
     
