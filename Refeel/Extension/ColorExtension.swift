@@ -24,3 +24,4 @@ extension Color {
     }
     static let primaryColor = Color(hex: "#FF5A28")
 }
+

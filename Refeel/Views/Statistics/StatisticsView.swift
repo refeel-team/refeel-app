@@ -40,13 +40,27 @@ struct StatisticsView: View {
                     Spacer()
 
                     Button {
-                        isYearSheetPresented.toggle() // 버튼 클릭 시 바텀 시트 표시
+                        isYearSheetPresented.toggle()
                     } label: {
-                        Text(String(format: "%d년", selectedYear)) // 선택된 연도 표시
-                            .foregroundColor(.blue)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 8).strokeBorder())
+                        HStack(spacing: 6) {
+                            Text(String(format: "%d년", selectedYear))
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color.primaryColor)
+
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                                .foregroundStyle(Color.primaryColor)
+                        }
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.primaryColor, lineWidth: 1)
+                        }
                     }
+
+
+
 
                     .sheet(isPresented: $isYearSheetPresented) {
                         VStack {
@@ -70,13 +84,26 @@ struct StatisticsView: View {
                     }
 
                     Button {
-                        isMonthSheetPresented.toggle() // 버튼 클릭 시 바텀 시트 표시
+                        isMonthSheetPresented.toggle()
                     } label: {
-                        Text("\(selectedMonth)월")
-                            .foregroundColor(.blue)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 8).strokeBorder())
+                        HStack(spacing: 6) {
+                            Text("\(selectedMonth)월")
+                                .fontWeight(.medium)
+                                .foregroundStyle(Color.primaryColor)
+
+                            Image(systemName: "chevron.down")
+                                .imageScale(.small)
+                                .foregroundStyle(Color.primaryColor)
+                        }
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.primaryColor, lineWidth: 1)
+                        }
                     }
+
+
 
                     .sheet(isPresented: $isMonthSheetPresented) {
                         VStack {
@@ -103,24 +130,11 @@ struct StatisticsView: View {
                 .padding()
 
                 ScrollView(.horizontal) {
-                    HStack(spacing: 16) {
+                    HStack(spacing: 6) {
                         Button {
                             selectedCategory = nil
                         } label: {
-                            Text("전체 보기")
-                                .foregroundStyle(.black)
-                                .fontWeight(.semibold)
-                                .padding()
-                                .background {
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .fill(selectedCategory == nil ? .green : .yellow)
-                                        .frame(width: 70, height: 30)
-
-                                    RoundedRectangle(cornerRadius: 5)
-                                        .stroke(lineWidth: 1)
-                                        .fill(.black)
-                                        .frame(width: 70, height: 30)
-                                }
+                            TagView(tag: StringTag(tagText: "전체 보기"), color: selectedCategory == nil ? Color.primaryColor : .gray)
                                 .padding(.horizontal, 8)
                         }
 
@@ -128,32 +142,13 @@ struct StatisticsView: View {
                             Button {
                                 selectedCategory = category
                             } label: {
-                                Text("\(category.rawValue)")
-                                    .foregroundStyle(.black)
-                                    .fontWeight(.semibold)
-                                    .padding()
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .fill(selectedCategory == category ? .green : .yellow)
-                                            .frame(width: 70, height: 30)
-
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .stroke(lineWidth: 1)
-                                            .fill(.black)
-                                            .frame(width: 70, height: 30)
-                                    }
-//                                    .padding(.horizontal, 5)
+                                TagView(tag: category, color: selectedCategory == category ? Color.primaryColor : .gray)
                             }
                         }
                         .padding(.trailing, 13)
                     }
                 }
                 .scrollIndicators(.hidden)
-                .background {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                }
-                
 
                 Spacer()
 

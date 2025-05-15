@@ -35,9 +35,6 @@ struct TagView<T: TagRepresentable>: View {
         .background {
             Capsule()
                 .fill(color.gradient)
-                .overlay(
-                    Capsule().stroke(.primary, lineWidth: 1)
-                )
         }
     }
 }
