@@ -22,5 +22,5 @@ extension Color {
         let b = Double((rgb >>  0) & 0xFF) / 255.0
         self.init(red: r, green: g, blue: b)
     }
-    static let primaryBlue = Color(hex: "#FF5A28")
+    static let primaryColor = Color(hex: "#FF5A28")
 }
