@@ -1,5 +1,5 @@
 //
-//  ColorExtension.swift
+//  Color+Extension.swift
 //  Refeel
 //
 //  Created by Abel on 5/15/25.
@@ -45,5 +45,8 @@ extension Color {
     static let midnightSteel = Color(hex: "#263A6C")
 
     static let twilightNavy = Color(hex: "#192B55")
+
+    static let lightSkyBlue = Color(hex: "#B8E3FF")
+    static let powderBlue = Color(hex: "#D6F0FF")
 }
 
