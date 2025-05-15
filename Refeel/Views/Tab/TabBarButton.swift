@@ -18,12 +18,10 @@ struct TabBarButton: View {
             VStack(spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 20, weight: .regular))
-                    .foregroundStyle(Color.primaryColor)
                 Text(title)
                     .font(.cafe24SsurroundAir(size: 14))
-                    .foregroundStyle(Color.primaryColor)
             }
-            .foregroundColor(isSelected ? Color.blue : Color.gray)
+            .foregroundColor(isSelected ? Color.primaryColor : Color.gray)
             .frame(maxWidth: .infinity)
         }
     }
