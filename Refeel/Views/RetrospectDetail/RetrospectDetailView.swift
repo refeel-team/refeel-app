@@ -36,11 +36,12 @@ struct RetrospectDetailView: View {
                 if let date = selectedDate {
                     Label {
                         Text(formattedDate(date))
-                            .font(.headline)
-                            .foregroundColor(.gray)
+                            .font(.title3)
+                            .foregroundColor(.primary)
+                            .fontWeight(.bold)
                     } icon: {
                         Image(systemName: "calendar")
-                            .foregroundColor(.gray)
+                            .foregroundColor(.primary)
                     }
                 }
 
@@ -49,9 +50,9 @@ struct RetrospectDetailView: View {
                 } label: {
                     HStack {
                         if let category = selectedCategory {
-                            TagView(tag: category, color: .blue)
+                            TagView(tag: category, color: Color.primaryColor)
                         } else {
-                            TagView(tag: StringTag(tagText: "카테고리를 선택 해주세요"), color: .blue)
+                            TagView(tag: StringTag(tagText: "카테고리를 선택 해주세요"), color: Color.primaryColor)
                         }
                     }
                     .font(.subheadline)
@@ -96,7 +97,7 @@ struct RetrospectDetailView: View {
 
                     FlowLayout(spacing: 10, lineSpacing: 10) {
                         ForEach(categories, id: \.self) { category in
-                            TagView(tag: category, color: selectedCategory == category ? .blue : .gray)
+                            TagView(tag: category, color: selectedCategory == category ? Color.primaryColor : .gray)
                                 .onTapGesture {
                                     selectedCategory = category
                                     showCategorySheet = false
@@ -158,12 +159,13 @@ struct RetrospectDetailView: View {
                     .foregroundStyle(.white)
                     .background {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(selectedCategory == nil ? Color(.gray) : Color(.black))
+                            .fill(selectedCategory == nil ? Color(.gray) : Color(Color.primaryColor))
                     }
             }
             .disabled(selectedCategory == nil)
             .padding()
         }
+        .padding(.vertical, 20)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 if isViewing {
