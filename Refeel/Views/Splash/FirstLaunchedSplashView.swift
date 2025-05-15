@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct SplashView: View {
+struct FirstLaunchedSplashView: View {
     @Binding var isActive: Bool
+    @Binding var isFirstLaunch: Bool
     @State private var textToShow = ""
     @State private var isTyping = true
     @State private var isErasing = false
@@ -38,6 +39,7 @@ struct SplashView: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     self.isActive = false
+                    self.isFirstLaunch = true
                 }
             }
         }
@@ -95,8 +97,8 @@ struct SplashView: View {
     }
 }
 
-struct SplashView_Previews: PreviewProvider {
+struct FirstLaunchedSplashView_Previews: PreviewProvider {
     static var previews: some View {
-        SplashView(isActive: .constant(true))
+        FirstLaunchedSplashView(isActive: .constant(true), isFirstLaunch: .constant(true))
     }
 }
