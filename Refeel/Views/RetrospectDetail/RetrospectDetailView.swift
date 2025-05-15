@@ -20,7 +20,6 @@ struct RetrospectDetailView: View {
     // 알림 처리
     @State private var showEmptyContentAlert = false
 
-
     // 저장소 위치
     @Environment(\.modelContext) private var context
     // 화면 pop하기 위한 dismiss
@@ -166,6 +165,15 @@ struct RetrospectDetailView: View {
         }
         .padding(.vertical, 20)
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundStyle(Color.primary)
+                }
+            }
+
             ToolbarItem(placement: .navigationBarTrailing) {
                 if isViewing {
                     Button {
@@ -195,6 +203,7 @@ struct RetrospectDetailView: View {
         } message: {
             Text("오늘의 아쉬웠던 점을 기록해주세요.")
         }
+        .navigationBarBackButtonHidden()
     }
     
 }
