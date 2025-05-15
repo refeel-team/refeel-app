@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct LogoOnlySplashView: View {
+    @Binding var isActive: Bool
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Color.white.ignoresSafeArea()
+            Image("refeel")
+        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.isActive = false
+            }
+        }
     }
 }
 
 #Preview {
-    LogoOnlySplashView()
+    LogoOnlySplashView(isActive: .constant(true))
 }
