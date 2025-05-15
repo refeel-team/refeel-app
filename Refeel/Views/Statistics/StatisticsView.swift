@@ -170,14 +170,9 @@ struct StatisticsView: View {
                         }
                     }
                 }
-<<<<<<< HEAD
-                .background(Color(.systemBackground))
-=======
                 .listStyle(.insetGrouped)
                 .scrollContentBackground(.hidden)
                 .background(Color.white)
-
->>>>>>> 4b2abbb7efc4ce23b0d3680df0d76f94f6c3b430
             }
             .padding()
             .navigationDestination(item: $selectedDate) { date in
