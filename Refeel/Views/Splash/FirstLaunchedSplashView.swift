@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct FirstLaunchedSplashView: View {
-    // 앱 스토리지로 첫 실행 유저 인지 판별
-    @AppStorage("hasLaunchedBefore") private var hasLaunchedBefore: Bool = false
     @Binding var isActive: Bool
+    @Binding var isFirstLaunch: Bool
     @State private var textToShow = ""
     @State private var isTyping = true
     @State private var isErasing = false
     @State private var isSecondTextShowing = false
+
     private let firstText = "Refeel"
     private let secondText = "다시 마주하다"
 
@@ -37,14 +37,9 @@ struct FirstLaunchedSplashView: View {
             }
             // 시간 지나면 종료
             .onAppear {
-                // 1. 앱 최초 실행 시만 false → true 저장
-                if !hasLaunchedBefore {
-                    hasLaunchedBefore = true
-                }
-
-                // 2. 일정 시간 후 스플래시 종료
-                DispatchQueue.main.asyncAfter(deadline: .now() + (hasLaunchedBefore ? 1.5 : 3.0)) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     self.isActive = false
+                    self.isFirstLaunch = true
                 }
             }
         }
@@ -67,7 +62,7 @@ struct FirstLaunchedSplashView: View {
         }
         RunLoop.current.add(timer, forMode: .common)
     }
-    
+
     // 지우개 함수
     func eraseText() {
         var index = textToShow.count
@@ -102,8 +97,8 @@ struct FirstLaunchedSplashView: View {
     }
 }
 
-struct SplashView_Previews: PreviewProvider {
+struct FirstLaunchedSplashView_Previews: PreviewProvider {
     static var previews: some View {
-        FirstLaunchedSplashView(isActive: .constant(true))
+        FirstLaunchedSplashView(isActive: .constant(true), isFirstLaunch: .constant(true))
     }
 }
