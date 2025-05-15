@@ -36,13 +36,14 @@ struct RetrospectDetailView: View {
                     Label {
                         Text(formattedDate(date))
                             .foregroundColor(.primary)
-                            .font(.cafe24SsurroundAir(size: 16))
+                            .font(.cafe24SsurroundAir(size: 12))
+                            .fixedSize(horizontal: false, vertical: true)
                     } icon: {
                         Image(systemName: "calendar")
                             .foregroundColor(.primary)
                     }
+                    .layoutPriority(1)
                 }
-
                 Button {
                     showCategorySheet = true
                 } label: {
@@ -56,6 +57,7 @@ struct RetrospectDetailView: View {
                     .padding(.vertical, 6)
                     .padding(.horizontal, 12)
                 }
+                .fixedSize()
                 .buttonStyle(PlainButtonStyle())
                 Spacer()
             }
@@ -84,7 +86,7 @@ struct RetrospectDetailView: View {
                     isViewing = false
                 }
             }
-//            .padding()
+            //            .padding()
             .sheet(isPresented: $showCategorySheet) {
                 VStack(spacing: 16) {
                     Text("내 하루에 담을 키워드를 골라주세요.")
@@ -107,7 +109,7 @@ struct RetrospectDetailView: View {
                     Spacer()
                 }
                 .padding(.top, 40)
-                .presentationDetents([.fraction(0.8), .medium])
+                .presentationDetents([.fraction(0.3)])
             }
             .padding()
         }
@@ -121,9 +123,9 @@ struct RetrospectDetailView: View {
             Button {
                 // TODO: 컨텐츠가 비어있을때도 유저 알림 필요
                 guard let selectedCategory, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                      showEmptyContentAlert = true
-                      return
-                  }
+                    showEmptyContentAlert = true
+                    return
+                }
                 // 카테고리 선택 안된경우 버튼 동작 안되도록, 나중에 메세지로 표시하거나 해서 유저한태 알려줄것 필요
 
                 let dateForSearch = Calendar.current.startOfDay(for: selectedDate ?? Date())
@@ -205,7 +207,7 @@ struct RetrospectDetailView: View {
         }
         .navigationBarBackButtonHidden()
     }
-    
+
 }
 
 #Preview {
