@@ -64,49 +64,49 @@
 
 ```
 Refeel
-├─ README.md                         // 프로젝트 소개, 실행 방법, 기술 스택 등을 설명하는 문서
-├─ Refeel                           // 실제 앱 소스 코드가 위치한 폴더
+├─ README.md                                                // 프로젝트 소개, 실행 방법, 기술 스택 등을 설명하는 문서
+├─ Refeel                                                           // 실제 앱 소스 코드가 위치한 폴더
 │  ├─ Enums
-│  │  └─ Category.swift             // 회고 등의 분류(Category)를 정의한 enum 파일
+│  │  └─ Category.swift                                     // 회고 등의 분류(Category)를 정의한 enum 파일
 │
-│  ├─ Extension                     // Swift 타입 확장을 모아둔 폴더
-│  │  ├─ Color+Extension.swift     // Color에 앱 전용 색상 정의 등 확장을 추가한 파일
-│  │  └─ Font+Extension.swift      // Font에 커스텀 폰트 설정 등을 추가한 파일
+│  ├─ Extension                                                 // Swift 타입 확장을 모아둔 폴더
+│  │  ├─ Color+Extension.swift                         // Color에 앱 전용 색상 정의 등 확장을 추가한 파일
+│  │  └─ Font+Extension.swift                          // Font에 커스텀 폰트 설정 등을 추가한 파일
 │
-│  ├─ FlowLayout.swift             // 유동적인 레이아웃(예: 태그 레이아웃 등)을 구현한 커스텀 Layout
+│  ├─ FlowLayout.swift                                      // 유동적인 레이아웃(예: 태그 레이아웃 등)을 구현한 커스텀 Layout
 │
 │  ├─ Font
-│  │  └─ Cafe24SsurroundAir-v1.1.ttf // 앱에서 사용하는 커스텀 폰트 파일
+│  │  └─ Cafe24SsurroundAir-v1.1.ttf                // 앱에서 사용하는 커스텀 폰트 파일
 │
-│  ├─ Info.plist                   // 앱의 기본 설정 정보 (권한, 폰트 등록 등 포함)
+│  ├─ Info.plist                                                    // 앱의 기본 설정 정보 (권한, 폰트 등록 등 포함)
 │
 │  ├─ Models
-│  │  └─ Retrospect.swift          // 회고(Retrospect) 데이터 모델 정의
+│  │  └─ Retrospect.swift                                   // 회고(Retrospect) 데이터 모델 정의
 │
-│  ├─ RefeelApp.swift              // 앱의 진입점 (SwiftUI @main 구조, 앱 전체 View 흐름 정의)
+│  ├─ RefeelApp.swift                                         // 앱의 진입점 (SwiftUI @main 구조, 앱 전체 View 흐름 정의)
 │
 │  ├─ Util
-│  │  └─ FormattedDate.swift      // 날짜를 형식화하는 유틸리티 함수 또는 구조체
+│  │  └─ FormattedDate.swift                             // 날짜를 형식화하는 유틸리티 함수 또는 구조체
 │
-│  └─ Views                        // 화면을 구성하는 SwiftUI View들을 폴더별로 정리
+│  └─ Views                                                         // 화면을 구성하는 SwiftUI View들을 폴더별로 정리
 │     ├─ Home
-│     │  ├─ CalendarView.swift     // 달력 UI 구성 View
-│     │  └─ HomeView.swift         // 홈 화면 전체 구성 View
+│     │  ├─ CalendarView.swift                            // 달력 UI 구성 View
+│     │  └─ HomeView.swift                                // 홈 화면 전체 구성 View
 │
 │     ├─ RetrospectDetail
-│     │  ├─ RetrospectDetailView.swift // 회고 상세 화면 View
-│     │  └─ TagView.swift               // 태그를 표시하거나 선택하는 View
+│     │  ├─ RetrospectDetailView.swift                    // 회고 상세 화면 View
+│     │  └─ TagView.swift                                         // 태그를 표시하거나 선택하는 View
 │
 │     ├─ Splash
-│     │  ├─ FirstLaunchedSplashView.swift // 앱을 처음 실행했을 때의 스플래시 화면
-│     │  └─ LogoOnlySplashView.swift     // 로고만 나오는 간단한 스플래시 화면
+│     │  ├─ FirstLaunchedSplashView.swift                       // 앱을 처음 실행했을 때의 스플래시 화면
+│     │  └─ LogoOnlySplashView.swift                              // 로고만 나오는 간단한 스플래시 화면
 │
 │     ├─ Statistics
-│     │  └─ StatisticsView.swift     // 통계 화면을 보여주는 View
+│     │  └─ StatisticsView.swift                              // 통계 화면을 보여주는 View
 │
 │     └─ Tab
-│        ├─ CustomMainTabView.swift // 메인 탭 바 구조 정의 View
-│        └─ TabBarButton.swift      // 탭 바에 사용되는 개별 버튼 View
+│        ├─ CustomMainTabView.swift                     // 메인 탭 바 구조 정의 View
+│        └─ TabBarButton.swift                                // 탭 바에 사용되는 개별 버튼 View
 
 
 ```
