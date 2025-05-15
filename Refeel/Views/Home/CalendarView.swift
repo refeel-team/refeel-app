@@ -20,10 +20,13 @@ struct CalendarView: View {
             // 월 이동 버튼, 타이틀
             HStack {
                 Button {
-                    currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+                    withAnimation {
+                        currentDate = Calendar.current.date(byAdding: .month, value: -1, to: currentDate) ?? currentDate
+                    }
                 } label: {
                     Image(systemName: "chevron.left")
                         .foregroundStyle(Color.primary)
+                        .fontWeight(.bold)
                 }
 
                 Spacer()
@@ -35,14 +38,17 @@ struct CalendarView: View {
                 Spacer()
 
                 Button {
-                    currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
+                    withAnimation {
+                        currentDate = Calendar.current.date(byAdding: .month, value: 1, to: currentDate) ?? currentDate
+                    }
                 } label: {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
+                        .fontWeight(.bold)
                 }
             }
             .padding(.horizontal, 40)
-            .padding()
+            .padding(.vertical)
 
             //달력
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
@@ -51,20 +57,29 @@ struct CalendarView: View {
                         .font(.title3)
                 }
             }
-            .padding(.top)
+            .padding(.top, 8)
             .padding(.horizontal)
 
-            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 10) {
+            LazyVGrid(columns: Array(repeating: GridItem(), count: 7),spacing: 22) {
                 ForEach(generateCalendar(), id: \.self) { date in
                     let isToday = Calendar.current.isDateInToday(date)
                     let isCurrentMonth = Calendar.current.isDate(date, equalTo: currentDate, toGranularity: .month)
+                    let isFuture = date > Date()
 
-                    VStack {
+                    VStack(spacing: 6) {
                         if isCurrentMonth {
-                            let isFuture = date > Date()
-                            Text("\(Calendar.current.component(.day, from: date))")
-                                .foregroundStyle(isToday ? .red : Color.primary)
-                                .fontWeight(isToday ? .bold : .regular)
+                            ZStack {
+                                if isToday {
+                                    Circle()
+                                        .frame(width: 24, height: 24)
+                                        .foregroundStyle(Color.blue.opacity(0.2))
+                                }
+
+                                Text("\(Calendar.current.component(.day, from: date))")
+                                    .foregroundStyle(isToday ? .blue : (isFuture ? Color.primary.opacity(0.5) : Color.primary))
+                                    .fontWeight(isToday ? .bold : .regular)
+                            }
+                            .frame(height: 30)
 
                             if !isFuture {
                                 if isWritten(date: date) {
@@ -81,13 +96,15 @@ struct CalendarView: View {
                                     } label: {
                                         RoundedRectangle(cornerRadius: 10)
                                             .frame(width: 40, height: 40)
-                                            .foregroundStyle(isToday ? Color.red.opacity(0.8) : Color.gray.opacity(0.4))
+                                            .foregroundStyle(isToday ? Color.blue.opacity(0.8) : Color.gray.opacity(0.4))
+                                            .shadow(radius: 1, y: 2)
                                     }
                                 }
                             } else {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 40, height: 40)
                                     .foregroundStyle(Color.gray.opacity(0.8))
+                                    .shadow(radius: 1, y: 2)
                             }
                         }
                     }

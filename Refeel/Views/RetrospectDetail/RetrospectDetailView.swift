@@ -28,17 +28,30 @@ struct RetrospectDetailView: View {
     var body: some View {
         // 글 보기 화면
         // isViewing으로 쓰기/보기 모드 분류
-        Button {
-            showCategorySheet = true
-        } label: {
-            Text(selectedCategory?.rawValue ?? "카테고리를 선택해주세요.")
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(8)
+        HStack {
+            if let date = selectedDate {
+                Text(formattedDate(date))
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+            }
+
+            Button {
+                showCategorySheet = true
+            } label: {
+                Text(selectedCategory?.rawValue ?? "카테고리 선택")
+                    .font(.subheadline)
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 12)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(6)
+            }
+            Spacer()
         }
+        .padding(.top, 16)
+        .padding(.horizontal)
+
         VStack(alignment: .leading) {
-            Text("오늘의 성과는 무엇이었나요?")
+            Text("오늘의 아쉬웠던 점은 무엇이었나요?")
                 .font(.headline)
             TextEditor(text: $text)
                 .frame(height: 200)
@@ -114,7 +127,7 @@ struct RetrospectDetailView: View {
                 }
                 dismiss()
             } label: {
-                Text("저장하기")
+                Text(isViewing ? "수정하기" : "저장하기")
                     .fontWeight(.semibold)
                     .padding(.vertical, 15)
                     .frame(maxWidth: .infinity)
@@ -127,9 +140,35 @@ struct RetrospectDetailView: View {
             .disabled(selectedCategory == nil)
             .padding()
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                if isViewing {
+                    Button {
+                        guard let selectedDate else { return }
+
+                        if let retrospectData = retrospects.first(where: { Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
+                        }) {
+                            context.delete(retrospectData)
+
+                            do {
+                                try context.save()
+                            } catch {
+                                print("회고 삭제 실패 삭제")
+                            }
+                            dismiss()
+                        }
+                        // 삭제 로직 추가
+                    } label: {
+                        Text("삭제")
+                            .foregroundColor(.red)
+                    }
+                }
+            }
+        }
     }
+    
 }
 
 #Preview {
-	RetrospectDetailView(selectedDate: Date())
+    RetrospectDetailView(selectedDate: Date())
 }
