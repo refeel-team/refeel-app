@@ -71,7 +71,6 @@ struct StatisticsView: View {
                             .pickerStyle(WheelPickerStyle())
                             .frame(height: 150)
 
-
                             Button{
                                 isYearSheetPresented = false
                             } label : {
@@ -108,8 +107,6 @@ struct StatisticsView: View {
                                 .stroke(Color.primaryColor, lineWidth: 1)
                         }
                     }
-
-
 
                     .sheet(isPresented: $isMonthSheetPresented) {
                         VStack {
@@ -185,6 +182,9 @@ struct StatisticsView: View {
                             }
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
+                            .onTapGesture {
+                                selectedDate = retrospect.date
+                            }
                         }
                     }
                 }
