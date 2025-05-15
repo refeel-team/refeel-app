@@ -17,9 +17,10 @@ struct RefeelApp: App {
             if isSplashActive {
                 SplashView(isActive: $isSplashActive)
             } else {
-                MainTabView()
+                CustomMainTabView()
             }
         }
         .modelContainer(for: Retrospect.self)
+        
     }
 }

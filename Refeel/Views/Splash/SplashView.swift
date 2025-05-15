@@ -26,7 +26,7 @@ struct SplashView: View {
                     .padding(.bottom, 20)
 
                 Text(textToShow)
-                    .font(.largeTitle)
+                    .font(.cafe24SsurroundAir(size: 24))
                     .fontWeight(.bold)
                     .foregroundColor(.black)
                     .multilineTextAlignment(.center)

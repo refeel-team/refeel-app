@@ -9,19 +9,7 @@ import SwiftUI
 
 struct MainTabView: View {
     var body: some View {
-        TabView {
-            HomeView()
-                .tabItem {
-                    Image(systemName: "calendar")
-                    Text("Calendar")
-                }
-
-            StatisticsView()
-                .tabItem {
-                    Image(systemName: "list.bullet")
-                    Text("List")
-                }
-        }
+        CustomMainTabView()
     }
 }
 

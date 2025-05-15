@@ -32,7 +32,7 @@ struct CalendarView: View {
                 Spacer()
 
                 Text(dateFormatting(by: currentDate))
-                    .font(.title2)
+                    .font(.cafe24SsurroundAir(size: 16))
                     .fontWeight(.semibold)
                 Spacer()
 
@@ -43,7 +43,7 @@ struct CalendarView: View {
                 } label: {
                     Image(systemName: "chevron.right")
                         .foregroundStyle(Color.primary)
-                        .fontWeight(.bold)
+                        .font(.cafe24SsurroundAir(size: 16))
                 }
             }
             .padding(.horizontal, 40)
@@ -53,7 +53,7 @@ struct CalendarView: View {
             LazyVGrid(columns: Array(repeating: GridItem(), count: 7)) {
                 ForEach(["일","월","화","수","목","금","토"], id: \.self) { day in
                     Text(day)
-                        .font(.title3)
+                        .font(.cafe24SsurroundAir(size: 16))
                 }
             }
             .padding(.top, 8)
@@ -75,6 +75,7 @@ struct CalendarView: View {
                                 }
 
                                 Text("\(Calendar.current.component(.day, from: date))")
+                                    .font(.cafe24SsurroundAir(size: 16))
                                     .foregroundStyle(isToday ? .blue : (isFuture ? Color.primary.opacity(0.5) : Color.primary))
                                     .fontWeight(isToday ? .bold : .regular)
                             }

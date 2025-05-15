@@ -36,8 +36,8 @@ struct StatisticsView: View {
             VStack {
                 HStack { // 타이틀 제목, 년도, 월 선택!!
                     Text("하루 기록들")
-                        .font(.title)
                         .bold()
+                        .font(.cafe24SsurroundAir(size: 24))
 
                     Spacer()
 
@@ -46,8 +46,13 @@ struct StatisticsView: View {
                     } label: {
                         HStack(spacing: 6) {
                             Text(String(format: "%d년", selectedYear))
+<<<<<<< HEAD
                                 .fontWeight(.medium)
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
+=======
+                                .font(.cafe24SsurroundAir(size: 16))
+                                .foregroundStyle(Color.primaryColor)
+>>>>>>> 2573abe3ea9caaeb9535aeb91dfa89320622d192
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
@@ -63,28 +68,34 @@ struct StatisticsView: View {
                         }
                     }
 
-
-
-
                     .sheet(isPresented: $isYearSheetPresented) {
                         VStack {
                             // 연도 선택 Picker
                             Picker("연도", selection: $selectedYear) {
                                 ForEach(2015...2035, id: \.self) { year in
                                     Text(String(format: "%d년", year)) // 연도 표시
+                                        .font(.cafe24SsurroundAir(size: 16))
                                 }
                             }
-                            .pickerStyle(WheelPickerStyle()) // 회전형 Picker
+                            .pickerStyle(WheelPickerStyle())
                             .frame(height: 150)
 
-                            Button("확인") {
-                                isYearSheetPresented = false // 바텀 시트 닫기
+
+                            Button{
+                                isYearSheetPresented = false
+                            } label : {
+                                Text("확인")
+                                    .font(.cafe24SsurroundAir(size: 16))
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 12)
+                                    .padding(.horizontal, 40)
+                                    .background(Color.primaryColor)
+                                    .cornerRadius(12)
+                                    .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
                             }
-                            .padding()
-                            .foregroundColor(.blue)
                         }
                         .padding()
-                        .presentationDetents([.fraction(0.4)])
+                        .presentationDetents([.fraction(0.3)])
                     }
 
                     Button {
@@ -92,8 +103,13 @@ struct StatisticsView: View {
                     } label: {
                         HStack(spacing: 6) {
                             Text("\(selectedMonth)월")
+<<<<<<< HEAD
                                 .fontWeight(.medium)
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
+=======
+                                .foregroundStyle(Color.primaryColor)
+                                .font(.cafe24SsurroundAir(size: 16))
+>>>>>>> 2573abe3ea9caaeb9535aeb91dfa89320622d192
 
                             Image(systemName: "chevron.down")
                                 .imageScale(.small)
@@ -114,19 +130,27 @@ struct StatisticsView: View {
                             Picker("월", selection: $selectedMonth) {
                                 ForEach(1...12, id: \.self) { month in
                                     Text("\(month)월")
+                                        .font(.cafe24SsurroundAir(size: 16))
                                 }
                             }
                             .pickerStyle(WheelPickerStyle()) // 회전형 Picker
                             .frame(height: 150)
 
-                            Button("확인") {
-                                isMonthSheetPresented = false // 바텀 시트 닫기
+                            Button{
+                                isMonthSheetPresented = false
+                            } label : {
+                                Text("확인")
+                                    .font(.cafe24SsurroundAir(size: 16))
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 12)
+                                    .padding(.horizontal, 40)
+                                    .background(Color.primaryColor)
+                                    .cornerRadius(12)
+                                    .shadow(color: .gray.opacity(0.3), radius: 4, x: 0, y: 2)
                             }
-                            .padding()
-                            .foregroundColor(.blue)
                         }
                         .padding()
-                        .presentationDetents([.fraction(0.4)])
+                        .presentationDetents([.fraction(0.3)])
                     }
 
                 }
@@ -159,16 +183,18 @@ struct StatisticsView: View {
                     // 카테고리 개수 표시 - Section header에 넣기
                     Section(header:
                                 Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
-                        .font(.headline)
+                        .font(.cafe24SsurroundAir(size: 16))
                         .padding(.vertical, 4)
                     ) {
                         ForEach(filteredRetrospects(), id: \.self) { retrospect in
                             HStack {
                                 Text(retrospect.content ?? "")
                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                    .font(.cafe24SsurroundAir(size: 16))
 
                                 Text(formattedDate(retrospect.date))
                                     .foregroundStyle(.gray)
+                                    .font(.cafe24SsurroundAir(size: 16))
                             }
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
