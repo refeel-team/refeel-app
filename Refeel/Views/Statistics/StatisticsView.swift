@@ -33,7 +33,7 @@ struct StatisticsView: View {
         NavigationStack {
             VStack {
                 HStack { // 타이틀 제목, 년도, 월 선택!!
-                    Text("통계 화면 제목")
+                    Text("하루 기록들")
                         .font(.title)
                         .bold()
 
@@ -100,6 +100,7 @@ struct StatisticsView: View {
                     }
 
                 }
+                .padding()
 
                 ScrollView(.horizontal) {
                     HStack(spacing: 16) {
@@ -111,11 +112,11 @@ struct StatisticsView: View {
                                 .fontWeight(.semibold)
                                 .padding()
                                 .background {
-                                    Capsule()
+                                    RoundedRectangle(cornerRadius: 5)
                                         .fill(selectedCategory == nil ? .green : .yellow)
                                         .frame(width: 70, height: 30)
 
-                                    Capsule()
+                                    RoundedRectangle(cornerRadius: 5)
                                         .stroke(lineWidth: 1)
                                         .fill(.black)
                                         .frame(width: 70, height: 30)
@@ -132,21 +133,27 @@ struct StatisticsView: View {
                                     .fontWeight(.semibold)
                                     .padding()
                                     .background {
-                                        Capsule()
+                                        RoundedRectangle(cornerRadius: 5)
                                             .fill(selectedCategory == category ? .green : .yellow)
                                             .frame(width: 70, height: 30)
 
-                                        Capsule()
+                                        RoundedRectangle(cornerRadius: 5)
                                             .stroke(lineWidth: 1)
                                             .fill(.black)
                                             .frame(width: 70, height: 30)
                                     }
-                                    .padding(.horizontal, 8)
+//                                    .padding(.horizontal, 5)
                             }
                         }
+                        .padding(.trailing, 13)
                     }
                 }
                 .scrollIndicators(.hidden)
+                .background {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                }
+                
 
                 Spacer()
 
@@ -172,9 +179,8 @@ struct StatisticsView: View {
                 }
                 .listStyle(.insetGrouped)
                 .scrollContentBackground(.hidden)
-                .background(Color.white)
+                .background(.background)
             }
-            .padding()
             .navigationDestination(item: $selectedDate) { date in
                 RetrospectDetailView(selectedDate: date)
             }
