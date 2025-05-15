@@ -10,6 +10,7 @@ import SwiftData
 
 
 struct CalendarView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var context
     @Query private var retrospects: [Retrospect]
     @Binding var selectedDate: Date?
@@ -101,7 +102,7 @@ struct CalendarView: View {
                             } else {
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 38, height: 38)
-                                    .foregroundStyle(Color.gray.opacity(0.8))
+                                    .foregroundStyle(colorScheme == .light ? Color.black.opacity(0.5) : Color.gray.opacity(0.2))
                                     .shadow(radius: 1, y: 2)
                             }
                         }
