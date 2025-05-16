@@ -7,6 +7,8 @@
 import SwiftUI
 import Foundation
 
+// Tag 스타일을 적용한 뷰와 태그 표현을 위한 프로토콜 구현
+
 protocol TagRepresentable {
     var tagText: String { get }
 }

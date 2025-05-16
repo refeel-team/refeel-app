@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// 홈과 통계 화면을 전환하는 커스텀 하단 탭바 뷰
+
 struct CustomMainTabView: View {
     @Environment(\.colorScheme) var colorScheme
     @State private var selectedIndex = 0

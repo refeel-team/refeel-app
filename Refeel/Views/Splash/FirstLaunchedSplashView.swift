@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// 앱 첫 실행 시 텍스트 타이핑 애니메이션을 보여주는 스플래시 뷰
+
 struct FirstLaunchedSplashView: View {
     @Binding var isActive: Bool
     @Binding var isFirstLaunch: Bool
