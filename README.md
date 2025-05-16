@@ -42,13 +42,13 @@
 
 **기간별 기획**
 
-| 기간          | 단계                    | 주요 작업                                                             |
-| ------------- | ----------------------- | --------------------------------------------------------------------- |
-| 05.12 ~ 05.12 | 🔍 기획 및 리서치       | 회고 방식 리서치- 유사 앱 분석 핵심 기능 정의                         |
-| 05.12 ~ 05.12 | 🎨 UI/UX 설계           | Figma에서 와이어프레임 제작- 레이아웃 구성                            |
-| 05.13 ~ 05.13 | 💻 Swift 개발 (1차 MVP) | Swift 기반 회고 저장 기능 구현                                        |
-| 05.13 ~ 05.14 | 🔁 테스트 및 피드백     | QA 테스트- 기능 개선 및 UI 다듬기                                     |
-| 05.14 ~ 05.15 | 🚀 고도화 및 마무리     | 감정 시각화 기능 추가- 알림 리마인드 기능- 발표자료 제작 및 배포 준비 |
+| 기간          | 단계                    | 주요 작업                                     |
+| ------------- | ----------------------- | --------------------------------------------- |
+| 05.12 ~ 05.12 | 🔍 기획 및 리서치       | 회고 방식 리서치- 유사 앱 분석 핵심 기능 정의 |
+| 05.12 ~ 05.12 | 🎨 UI/UX 설계           | Figma에서 와이어프레임 제작- 레이아웃 구성    |
+| 05.13 ~ 05.13 | 💻 Swift 개발 (1차 MVP) | Swift 기반 회고 저장 기능 구현                |
+| 05.13 ~ 05.14 | 🔁 테스트 및 피드백     | QA 테스트- 기능 개선 및 UI 다듬기             |
+| 05.14 ~ 05.15 | 🚀 고도화 및 마무리     | 발표자료 제작 및 배포 준비                    |
 
 **단계별 기획**
 
@@ -59,3 +59,100 @@
 | **UI 디자인**      | SwiftUI를 사용하여 회고 작성 뷰, 리스트 뷰, 달력 뷰, 상세 뷰를 각 모듈로 분리                |
 | **기능 개발**      | - 회고 CRUD 기능 구현 - 통계 리스트 정렬 및 날짜 필터링 - 달력 기반 탐색 기능 구현           |
 | **테스트 및 개선** | 실제 iOS 기기 테스트 진행, 뷰 전환 오류 수정                                                 |
+
+### 프로젝트 구조
+
+```
+Refeel
+├─ README.md                                         // 프로젝트 소개, 실행 방법, 기술 스택 등을 설명하는 문서
+├─ Refeel                                                    // 실제 앱 소스 코드가 위치한 폴더
+│  ├─ Enums
+│  │  └─ Category.swift                              // 회고 등의 분류(Category)를 정의한 enum 파일
+│
+│  ├─ Extension                                          // Swift 타입 확장을 모아둔 폴더
+│  │  ├─ Color+Extension.swift                  // Color에 앱 전용 색상 정의 등 확장을 추가한 파일
+│  │  └─ Font+Extension.swift                   // Font에 커스텀 폰트 설정 등을 추가한 파일
+│
+│  ├─ FlowLayout.swift                               // 유동적인 레이아웃(예: 태그 레이아웃 등)을 구현한 커스텀 Layout
+│
+│  ├─ Font
+│  │  └─ Cafe24SsurroundAir-v1.1.ttf         // 앱에서 사용하는 커스텀 폰트 파일
+│
+│  ├─ Info.plist                                             // 앱의 기본 설정 정보 (권한, 폰트 등록 등 포함)
+│
+│  ├─ Models
+│  │  └─ Retrospect.swift                            // 회고(Retrospect) 데이터 모델 정의
+│
+│  ├─ RefeelApp.swift                                  // 앱의 진입점 (SwiftUI @main 구조, 앱 전체 View 흐름 정의)
+│
+│  ├─ Util
+│  │  └─ FormattedDate.swift                      // 날짜를 형식화하는 유틸리티 함수 또는 구조체
+│
+│  └─ Views                                                  // 화면을 구성하는 SwiftUI View들을 폴더별로 정리
+│     ├─ Home
+│     │  ├─ CalendarView.swift                     // 달력 UI 구성 View
+│     │  └─ HomeView.swift                         // 홈 화면 전체 구성 View
+│
+│     ├─ RetrospectDetail
+│     │  ├─ RetrospectDetailView.swift             // 회고 상세 화면 View
+│     │  └─ TagView.swift                                  // 태그를 표시하거나 선택하는 View
+│
+│     ├─ Splash
+│     │  ├─ FirstLaunchedSplashView.swift                // 앱을 처음 실행했을 때의 스플래시 화면
+│     │  └─ LogoOnlySplashView.swift                       // 로고만 나오는 간단한 스플래시 화면
+│
+│     ├─ Statistics
+│     │  └─ StatisticsView.swift                       // 통계 화면을 보여주는 View
+│
+│     └─ Tab
+│        ├─ CustomMainTabView.swift              // 메인 탭 바 구조 정의 View
+│        └─ TabBarButton.swift                         // 탭 바에 사용되는 개별 버튼 View
+
+
+```
+
+## 실행 방법
+
+### 1. 프로젝트 클론
+
+```bash
+git clone https://github.com/jihyeonjjang/HaruPocket.git
+cd HaruPocket
+```
+
+### 2. Xcode에서 열기
+
+- `HaruPocket.xcodeproj` 또는 `HaruPocket.xcworkspace`를 **Xcode 15 이상**에서 엽니다.
+
+### 3. 패키지 설치 확인
+
+- 프로젝트를 열면 자동으로 **EmojiPicker 2.1.1**이 설치됩니다.
+- 설치 오류가 발생할 경우 `File > Packages > Resolve Package Versions`를 선택하세요.
+
+### 4. 실행
+
+- 시뮬레이터 또는 실제 디바이스를 선택 후 ▶️ 버튼으로 실행합니다.
+
+### 5. 미리보기 사용 (옵션)
+
+- `#Preview` 구조와 `inMemory` 컨테이너를 이용해 SwiftUI 뷰 미리보기가 가능합니다.
+
+---
+
+## 실행 방법
+
+### 1. 프로젝트 클론
+
+```bash
+git clone https://github.com/refeel-team/refeel-app.git
+cd refeel-app
+```
+
+### 2. Xcode에서 열기
+
+- `Refeel.xcodeproj` 또는 `Refeel.xcworkspace ( **Xcode 15 이상 권장**)
+
+### 3. 실행
+
+- 시뮬레이터 또는 실제 디바이스를 선택 후 버튼으로 왼쪽 상단에 재생 버튼 또는 `Shift+R` 실행합니다.
+  니다.
