@@ -119,33 +119,6 @@ Refeel
 
 
 ```
-
-## 실행 방법
-
-### 1. 프로젝트 클론
-
-```bash
-git clone https://github.com/jihyeonjjang/HaruPocket.git
-cd HaruPocket
-```
-
-### 2. Xcode에서 열기
-
-- `HaruPocket.xcodeproj` 또는 `HaruPocket.xcworkspace`를 **Xcode 15 이상**에서 엽니다.
-
-### 3. 패키지 설치 확인
-
-- 프로젝트를 열면 자동으로 **EmojiPicker 2.1.1**이 설치됩니다.
-- 설치 오류가 발생할 경우 `File > Packages > Resolve Package Versions`를 선택하세요.
-
-### 4. 실행
-
-- 시뮬레이터 또는 실제 디바이스를 선택 후 ▶️ 버튼으로 실행합니다.
-
-### 5. 미리보기 사용 (옵션)
-
-- `#Preview` 구조와 `inMemory` 컨테이너를 이용해 SwiftUI 뷰 미리보기가 가능합니다.
-
 ---
 
 ## 실행 방법
