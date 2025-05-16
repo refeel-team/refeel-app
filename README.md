@@ -13,6 +13,12 @@
 | [<img src="https://avatars.githubusercontent.com/morgan4563" height=150 width=150> <br/> @morgan4563](https://github.com/morgan4563) | [<img src="https://avatars.githubusercontent.com/kdn0325" height=150 width=150> <br/> @kdn0325](https://github.com/kdn0325) | [<img src="https://avatars.githubusercontent.com/Jeon-GwangHo" height=150 width=150> <br/> @Jeon-GwangHo](https://github.com/Jeon-GwangHo) | [<img src="https://avatars.githubusercontent.com/kimyujin0822" height=150 width=150> <br/> @kimyujin0822](https://github.com/kimyujin0822) |
 
 </div>
+<div align="center">
+
+| ![Image](https://github-production-user-asset-6210df.s3.amazonaws.com/91298955/444339968-c270dbc7-1b7a-4086-8d39-298897de7416.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250516T011821Z&X-Amz-Expires=300&X-Amz-Signature=cced2444a5b7edc9a4fdc2c92e65f806788cb9ab66478e2c7bf23b1af974527d&X-Amz-SignedHeaders=host) | ![Image](https://github-production-user-asset-6210df.s3.amazonaws.com/91298955/444339957-627b3df8-57b4-43e5-a0ff-007ec7a0c380.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250516T011711Z&X-Amz-Expires=300&X-Amz-Signature=28bcaa6b04acb6af6e0e014e4a2868d36c16e4e80326c3f69e777b1e671c7111&X-Amz-SignedHeaders=host) |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+
+</div>
 
 ### **활용 기술**
 
