@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 카테고리 열거형 타입
 
 enum Category: String, CaseIterable, Codable {
     case workout = "운동"

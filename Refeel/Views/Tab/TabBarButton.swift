@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// 아이콘과 텍스트로 구성된 하단 탭바 버튼 컴포넌트
+
 struct TabBarButton: View {
     @Environment(\.colorScheme) var colorScheme
 

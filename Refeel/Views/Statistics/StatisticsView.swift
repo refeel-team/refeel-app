@@ -22,6 +22,8 @@ struct StatisticsView: View {
 
     @Environment(\.colorScheme) var colorScheme
     
+    // 회고 개수를 기준으로 카테고리를 내림차순 정렬한 리스트
+
     var sortedCategoriesByCount: [Category] {
         let counts = Dictionary(grouping: retrospects, by: \.category)
             .mapValues { $0.count }
@@ -206,6 +208,7 @@ struct StatisticsView: View {
         }
     }
 
+    // 선택된 연도, 월, 카테고리에 따라 회고를 필터링하고 하루에 하나씩만 최신순으로 정렬하는 함수
     private func filteredRetrospects() -> [Retrospect] {
         let filtered = retrospects.filter { retrospect in
             let components = Calendar.current.dateComponents([.year, .month], from: retrospect.date)

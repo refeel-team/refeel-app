@@ -7,10 +7,13 @@
 
 import SwiftUI
 
+// 서브뷰들을 줄 단위로 자동 배치하는 커스텀 레이아웃
+
 struct FlowLayout: Layout {
     var spacing: CGFloat? = nil
     var lineSpacing: CGFloat = 10.0
 
+    // 캐시에 저장할 서브뷰 크기 및 간격
     struct Cache {
         var sizes: [CGSize] = []
         var spacing: [CGFloat] = []
@@ -32,6 +35,7 @@ struct FlowLayout: Layout {
         return Cache(sizes: sizes, spacing: spacing)
     }
 
+     /ㄴ/ 전체 레이아웃의 크기 계산
     func sizeThatFits(
         proposal: ProposedViewSize,
         subviews: Subviews,
