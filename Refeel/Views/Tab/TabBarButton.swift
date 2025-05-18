@@ -11,7 +11,6 @@ import SwiftUI
 
 struct TabBarButton: View {
     @Environment(\.colorScheme) var colorScheme
-
     let icon: String
     let title: String
     let isSelected: Bool
