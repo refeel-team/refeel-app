@@ -71,14 +71,17 @@ struct RetrospectDetailView: View {
             .sheet(isPresented: $showCategorySheet) {
                 VStack(spacing: 16) {
                     Text("내 하루에 담을 키워드를 골라주세요.")
+                        .dynamicTypeSize(.xSmall ... .xLarge)
                         .font(.title3)
                     Text("딱 한 개만 고르실 수 있어요")
+                        .dynamicTypeSize(.xSmall ... .xLarge)
                         .font(.headline)
                         .foregroundStyle(.gray)
                     
                     FlowLayout(spacing: 10, lineSpacing: 10) {
                         ForEach(categories, id: \.self) { category in
                             TagView(tag: category, color: viewModel.selectedCategory == category ? Color.primaryColor : .gray)
+                                .dynamicTypeSize(.xSmall ... .xLarge)
                                 .onTapGesture {
                                     viewModel.selectedCategory = category
                                     showCategorySheet = false
