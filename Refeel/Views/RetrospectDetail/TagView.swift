@@ -22,7 +22,7 @@ struct StringTag: TagRepresentable {
 struct TagView<T: TagRepresentable>: View {
     let tag: T
     let color: Color
-
+    
     var body: some View {
         HStack {
             Text(tag.tagText)
