@@ -14,8 +14,6 @@ struct StatisticsView: View {
     @Query var retrospects: [Retrospect]
     @Environment(\.colorScheme) var colorScheme
     
-
-
     var body: some View {
         NavigationStack {
             VStack {

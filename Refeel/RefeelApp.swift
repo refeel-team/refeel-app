@@ -25,6 +25,7 @@ struct RefeelApp: App {
                     FirstLaunchedSplashView(isActive: $isSplashActive, isFirstLaunch: $isFirstLaunchCompleted)
                 }
             } else {
+                // 스플래시 화면이 끝나면 메인 탭바 화면으로 전환
                 CustomMainTabView()
                     .dynamicTypeSize(.xSmall ... .xLarge)
             }

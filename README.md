@@ -1,6 +1,6 @@
 # Refeel
 
-'Refeel'은 **re (다시) + feel (느끼다)**의 합성어로,  
+'Refeel'은 Re (다시) + feel (느끼다)의 합성어로,  
 지난 날의 감정을 다시 느끼고 마주하며  
 나 자신을 더 잘 이해하고 성장할 수 있도록 돕는 회고 앱입니다.
 
@@ -11,6 +11,15 @@
 |                                                              **박현준**                                                              |                                                         **김동녕**                                                          |                                                                 **전광호**                                                                 |                                                                 **김유진**                                                                 |
 | :----------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------: |
 | [<img src="https://avatars.githubusercontent.com/morgan4563" height=150 width=150> <br/> @morgan4563](https://github.com/morgan4563) | [<img src="https://avatars.githubusercontent.com/kdn0325" height=150 width=150> <br/> @kdn0325](https://github.com/kdn0325) | [<img src="https://avatars.githubusercontent.com/Jeon-GwangHo" height=150 width=150> <br/> @Jeon-GwangHo](https://github.com/Jeon-GwangHo) | [<img src="https://avatars.githubusercontent.com/kimyujin0822" height=150 width=150> <br/> @kimyujin0822](https://github.com/kimyujin0822) |
+
+</div>
+
+### 앱 소개
+
+<div align="center">
+
+| ![Image](https://github-production-user-asset-6210df.s3.amazonaws.com/91298955/444339968-c270dbc7-1b7a-4086-8d39-298897de7416.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250516T011821Z&X-Amz-Expires=300&X-Amz-Signature=cced2444a5b7edc9a4fdc2c92e65f806788cb9ab66478e2c7bf23b1af974527d&X-Amz-SignedHeaders=host) | ![Image](https://github-production-user-asset-6210df.s3.amazonaws.com/91298955/444339957-627b3df8-57b4-43e5-a0ff-007ec7a0c380.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20250516%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250516T011711Z&X-Amz-Expires=300&X-Amz-Signature=28bcaa6b04acb6af6e0e014e4a2868d36c16e4e80326c3f69e777b1e671c7111&X-Amz-SignedHeaders=host) |
+| :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
 
 </div>
 
@@ -110,33 +119,6 @@ Refeel
 
 
 ```
-
-## 실행 방법
-
-### 1. 프로젝트 클론
-
-```bash
-git clone https://github.com/jihyeonjjang/HaruPocket.git
-cd HaruPocket
-```
-
-### 2. Xcode에서 열기
-
-- `HaruPocket.xcodeproj` 또는 `HaruPocket.xcworkspace`를 **Xcode 15 이상**에서 엽니다.
-
-### 3. 패키지 설치 확인
-
-- 프로젝트를 열면 자동으로 **EmojiPicker 2.1.1**이 설치됩니다.
-- 설치 오류가 발생할 경우 `File > Packages > Resolve Package Versions`를 선택하세요.
-
-### 4. 실행
-
-- 시뮬레이터 또는 실제 디바이스를 선택 후 ▶️ 버튼으로 실행합니다.
-
-### 5. 미리보기 사용 (옵션)
-
-- `#Preview` 구조와 `inMemory` 컨테이너를 이용해 SwiftUI 뷰 미리보기가 가능합니다.
-
 ---
 
 ## 실행 방법
@@ -155,4 +137,3 @@ cd refeel-app
 ### 3. 실행
 
 - 시뮬레이터 또는 실제 디바이스를 선택 후 버튼으로 왼쪽 상단에 재생 버튼 또는 `Shift+R` 실행합니다.
-  니다.

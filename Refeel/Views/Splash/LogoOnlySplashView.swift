@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// 로고만 표시하고 종료되는 스플래시 뷰
+
 struct LogoOnlySplashView: View {
     @Binding var isActive: Bool
     var body: some View {
