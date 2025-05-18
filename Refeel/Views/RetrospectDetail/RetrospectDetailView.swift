@@ -16,9 +16,9 @@ struct RetrospectDetailView: View {
     @State private var showEmptyContentAlert = false
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    
+
     let categories = Category.allCases
-    
+
     var body: some View {
         VStack {
             HStack(spacing: 12) {
@@ -53,8 +53,8 @@ struct RetrospectDetailView: View {
             }
             .padding(.top, 16)
             .padding(.horizontal)
-            
-            
+
+
             VStack(alignment: .leading) {
                 Text("오늘의 아쉬웠던 점은 무엇이었나요?")
                     .font(.cafe24SsurroundAir(size: 16))
@@ -77,7 +77,8 @@ struct RetrospectDetailView: View {
                         .dynamicTypeSize(.xSmall ... .xLarge)
                         .font(.headline)
                         .foregroundStyle(.gray)
-                    
+
+
                     FlowLayout(spacing: 10, lineSpacing: 10) {
                         ForEach(categories, id: \.self) { category in
                             TagView(tag: category, color: viewModel.selectedCategory == category ? Color.primaryColor : .gray)
@@ -88,18 +89,15 @@ struct RetrospectDetailView: View {
                                 }
                         }
                     }
-                    .padding()
-                    
-                    Spacer()
                 }
                 .padding(.top, 40)
                 .presentationDetents([.fraction(0.3)])
             }
             .padding()
         }
-        
+
         Spacer()
-        
+
         // 저장 또는 수정 버튼
         ZStack {
             Button {
@@ -108,7 +106,7 @@ struct RetrospectDetailView: View {
                     showEmptyContentAlert = true
                     return
                 }
-                
+
                 do {
                     try viewModel.save(selectedDate: selectedDate, retrospects: retrospects, context: context)
                     dismiss()
@@ -139,7 +137,7 @@ struct RetrospectDetailView: View {
                         .foregroundStyle(Color.primary)
                 }
             }
-            
+
             ToolbarItem(placement: .navigationBarTrailing) {
                 if viewModel.isViewing {
                     Button {
