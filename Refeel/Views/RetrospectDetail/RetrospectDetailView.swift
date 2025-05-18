@@ -116,9 +116,7 @@ struct RetrospectDetailView: View {
 
         Spacer()
 
-
         // 저장 또는 수정 버튼
-
         ZStack {
             Button {
                 // TODO: 컨텐츠가 비어있을때도 유저 알림 필요

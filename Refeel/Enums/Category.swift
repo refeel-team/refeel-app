@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum Category: String, CaseIterable, Codable {
     case workout = "운동"
     case study = "공부"
