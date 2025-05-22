@@ -9,30 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct StatisticsView: View {
-    @State private var selectedYear = Calendar.current.component(.year, from: Date())
-    @State private var selectedMonth = Calendar.current.component(.month, from: Date())
-
-    let categories = Category.allCases
-    @State private var selectedCategory: Category? = nil
-    @State private var selectedDate: Date? = nil
-    @State private var isYearSheetPresented = false
-    @State private var isMonthSheetPresented = false
+    @StateObject private var viewModel = StatisticsViewModel()
 
     @Query var retrospects: [Retrospect]
-
     @Environment(\.colorScheme) var colorScheme
     
-    // 회고 개수를 기준으로 카테고리를 내림차순 정렬한 리스트
-
-    var sortedCategoriesByCount: [Category] {
-        let counts = Dictionary(grouping: retrospects, by: \.category)
-            .mapValues { $0.count }
-
-        return categories.sorted {
-            (counts[$0] ?? 0) > (counts[$1] ?? 0)
-        }
-    }
-
     var body: some View {
         NavigationStack {
             VStack {
@@ -44,10 +25,10 @@ struct StatisticsView: View {
                     Spacer()
 
                     Button {
-                        isYearSheetPresented.toggle()
+                        viewModel.isYearSheetPresented.toggle()
                     } label: {
                         HStack(spacing: 6) {
-                            Text(String(format: "%d년", selectedYear))
+                            Text(String(format: "%d년", viewModel.selectedYear))
                                 .font(.cafe24SsurroundAir(size: 10))
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
 
@@ -66,10 +47,10 @@ struct StatisticsView: View {
                         }
                     }
 
-                    .sheet(isPresented: $isYearSheetPresented) {
+                    .sheet(isPresented: $viewModel.isYearSheetPresented) {
                         VStack {
                             // 연도 선택 Picker
-                            Picker("연도", selection: $selectedYear) {
+                            Picker("연도", selection: $viewModel.selectedYear) {
                                 ForEach(2015...2035, id: \.self) { year in
                                     Text(String(format: "%d년", year)) // 연도 표시
                                         .font(.cafe24SsurroundAir(size: 16))
@@ -79,7 +60,7 @@ struct StatisticsView: View {
                             .frame(height: 150)
 
                             Button{
-                                isYearSheetPresented = false
+                                viewModel.isYearSheetPresented = false
                             } label : {
                                 Text("확인")
                                     .font(.cafe24SsurroundAir(size: 16))
@@ -96,10 +77,10 @@ struct StatisticsView: View {
                     }
 
                     Button {
-                        isMonthSheetPresented.toggle()
+                        viewModel.isMonthSheetPresented.toggle()
                     } label: {
                         HStack(spacing: 6) {
-                            Text("\(selectedMonth)월")
+                            Text("\(viewModel.selectedMonth)월")
                                 .foregroundStyle(colorScheme == .dark ? Color.powderCloudBlue : Color.twilightNavy)
                                 .font(.cafe24SsurroundAir(size: 10))
 
@@ -117,10 +98,10 @@ struct StatisticsView: View {
                                     lineWidth: 1)
                         }
                     }
-                    .sheet(isPresented: $isMonthSheetPresented) {
+                    .sheet(isPresented: $viewModel.isMonthSheetPresented) {
                         VStack {
                             // 연도 선택 Picker
-                            Picker("월", selection: $selectedMonth) {
+                            Picker("월", selection: $viewModel.selectedMonth) {
                                 ForEach(1...12, id: \.self) { month in
                                     Text("\(month)월")
                                         .font(.cafe24SsurroundAir(size: 16))
@@ -130,7 +111,7 @@ struct StatisticsView: View {
                             .frame(height: 150)
 
                             Button{
-                                isMonthSheetPresented = false
+                                viewModel.isMonthSheetPresented = false
                             } label : {
                                 Text("확인")
                                     .font(.cafe24SsurroundAir(size: 16))
@@ -152,17 +133,17 @@ struct StatisticsView: View {
                 ScrollView(.horizontal) {
                     HStack(spacing: 6) {
                         Button {
-                            selectedCategory = nil
+                            viewModel.selectedCategory = nil
                         } label: {
-                            TagView(tag: StringTag(tagText: "전체 보기"), color: selectedCategory == nil ? Color.midnightSteel : .gray)
+                            TagView(tag: StringTag(tagText: "전체 보기"), color: viewModel.selectedCategory == nil ? Color.midnightSteel : .gray)
                                 .padding(.horizontal, 8)
                         }
                         
-                        ForEach(sortedCategoriesByCount, id: \.self) { category in
+                        ForEach(viewModel.sortedCategoriesByCount(retrospects: retrospects), id: \.self) { category in
                             Button {
-                                selectedCategory = category
+                                viewModel.selectedCategory = category
                             } label: {
-                                TagView(tag: category, color: selectedCategory == category ? Color.midnightSteel : .gray)
+                                TagView(tag: category, color: viewModel.selectedCategory == category ? Color.midnightSteel : .gray)
                             }
                         }
                         .padding(.trailing, 13)
@@ -175,11 +156,11 @@ struct StatisticsView: View {
                 List {
                     // 카테고리 개수 표시 - Section header에 넣기
                     Section (header:
-                        Text("\(selectedCategory?.rawValue ?? "전체"): \(filteredRetrospects().count)개")
+                                Text("\(viewModel.selectedCategory?.rawValue ?? "전체"): \(viewModel.filteredRetrospects(retrospects: retrospects).count)개")
                             .font(.cafe24SsurroundAir(size: 16))
                             .padding(.vertical, 4)
                     ) {
-                        ForEach(filteredRetrospects(), id: \.self) { retrospect in
+                        ForEach(viewModel.filteredRetrospects(retrospects: retrospects), id: \.self) { retrospect in
                             HStack {
                                 Text(retrospect.content ?? "")
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -192,7 +173,7 @@ struct StatisticsView: View {
                             .padding(.vertical, 4)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                selectedDate = retrospect.date
+                                viewModel.selectedDate = retrospect.date
                             }
                         }
                     }
@@ -202,33 +183,10 @@ struct StatisticsView: View {
                 .scrollContentBackground(.hidden)
                 .background(.background)
             }
-            .navigationDestination(item: $selectedDate) { date in
+            .navigationDestination(item: $viewModel.selectedDate) { date in
                 RetrospectDetailView(selectedDate: date)
             }
         }
-    }
-
-    // 선택된 연도, 월, 카테고리에 따라 회고를 필터링하고 하루에 하나씩만 최신순으로 정렬하는 함수
-    private func filteredRetrospects() -> [Retrospect] {
-        let filtered = retrospects.filter { retrospect in
-            let components = Calendar.current.dateComponents([.year, .month], from: retrospect.date)
-            let isYearAndMonthMatching = components.year == selectedYear && components.month == selectedMonth
-
-            if let category = selectedCategory {
-                return retrospect.category == category && isYearAndMonthMatching
-            } else {
-                return isYearAndMonthMatching
-            }
-        }
-        let grouped = Dictionary(grouping: filtered) { retrospect in
-            formattedDate(retrospect.date)
-        }
-
-        let earliestPerDay = grouped.values.compactMap { group in
-            group.sorted { $0.date < $1.date }.first
-        }
-        // 최신 날짜가 위로 오도록 정렬
-        return earliestPerDay.sorted { $0.date > $1.date }
     }
 }
 
